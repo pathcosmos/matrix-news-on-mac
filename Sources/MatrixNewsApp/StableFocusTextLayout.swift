@@ -85,11 +85,11 @@ struct StableFocusTextLayout: Equatable {
     ) -> [String] {
         let totalCount = lines.reduce(0) { $0 + $1.count }
         let targetCount = max(0, min(characterCount, totalCount))
-        let shouldShowCursor = showsCursor && targetCount < totalCount
+        let shouldShowCursor = showsCursor
         var remaining = targetCount
         var didPlaceCursor = false
 
-        return lines.map { line in
+        var visibleLines = lines.map { line in
             guard remaining < line.count else {
                 remaining -= line.count
                 return line
@@ -103,6 +103,17 @@ struct StableFocusTextLayout: Equatable {
             }
             return ""
         }
+
+        if shouldShowCursor && !didPlaceCursor {
+            let lineIndex = visibleLines.lastIndex {
+                !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            } ?? max(0, visibleLines.count - 1)
+            if visibleLines.indices.contains(lineIndex) {
+                visibleLines[lineIndex] += "▌"
+            }
+        }
+
+        return visibleLines
     }
 
     private static func makeMetricsAndFrame(
@@ -264,6 +275,38 @@ struct StableFocusTypewriterFrame: Equatable {
     var position: Int
     var totalCount: Int
     var cycleIndex: Int
+    var cursorTarget: StableFocusCursorTarget
+    var showsCursor: Bool
+    var newsTransitionProgress: Double
+    var newsTransitionIntensity: Double
+}
+
+enum StableFocusCursorTarget: Equatable {
+    case none
+    case title
+    case summary
+}
+
+enum StableFocusNewsTransition {
+    static let duration: TimeInterval = 0.42
+
+    static func progress(elapsedTime: TimeInterval) -> Double {
+        guard elapsedTime > 0 else { return 0 }
+        return min(1, max(0, elapsedTime / duration))
+    }
+
+    static func intensity(progress: Double) -> Double {
+        let clampedProgress = min(1, max(0, progress))
+        guard clampedProgress < 1 else { return 0 }
+
+        let easedExit = 1 - smoothStep(clampedProgress)
+        let flicker = 0.74 + 0.26 * abs(sin(clampedProgress * .pi * 5))
+        return easedExit * flicker
+    }
+
+    private static func smoothStep(_ value: Double) -> Double {
+        value * value * (3 - 2 * value)
+    }
 }
 
 struct StableFocusTypewriterPlayback {
@@ -338,28 +381,48 @@ struct StableFocusPlaybackPlan: Equatable {
     ) -> StableFocusTypewriterFrame {
         let titleDuration = Double(entry.layout.titleCharacterCount) / configuration.titleCharactersPerSecond
         let summaryDuration = Double(entry.layout.summaryCharacterCount) / configuration.summaryCharactersPerSecond
+        let transitionProgress = StableFocusNewsTransition.progress(elapsedTime: localTime)
 
         let titleCount: Int
         let summaryCount: Int
         let isPaused: Bool
+        let cursorTarget: StableFocusCursorTarget
+        let showsCursor: Bool
 
         if localTime < titleDuration {
             titleCount = Int(localTime * configuration.titleCharactersPerSecond)
             summaryCount = 0
             isPaused = false
+            cursorTarget = .title
+            showsCursor = true
         } else if localTime < titleDuration + configuration.titlePauseDuration {
             titleCount = entry.layout.titleCharacterCount
             summaryCount = 0
             isPaused = true
+            cursorTarget = .title
+            showsCursor = Self.cursorIsVisible(
+                elapsedTime: localTime - titleDuration,
+                duration: configuration.titlePauseDuration
+            )
         } else if localTime < titleDuration + configuration.titlePauseDuration + summaryDuration {
             titleCount = entry.layout.titleCharacterCount
             let summaryTime = localTime - titleDuration - configuration.titlePauseDuration
             summaryCount = Int(summaryTime * configuration.summaryCharactersPerSecond)
             isPaused = false
+            cursorTarget = .summary
+            showsCursor = true
         } else {
             titleCount = entry.layout.titleCharacterCount
             summaryCount = entry.layout.summaryCharacterCount
             isPaused = true
+            cursorTarget = .summary
+            showsCursor = Self.cursorIsVisible(
+                elapsedTime: localTime
+                    - titleDuration
+                    - configuration.titlePauseDuration
+                    - summaryDuration,
+                duration: configuration.summaryPauseDuration
+            )
         }
 
         return StableFocusTypewriterFrame(
@@ -370,7 +433,11 @@ struct StableFocusPlaybackPlan: Equatable {
             isPaused: isPaused,
             position: entry.position,
             totalCount: entry.totalCount,
-            cycleIndex: cycleIndex
+            cycleIndex: cycleIndex,
+            cursorTarget: cursorTarget,
+            showsCursor: showsCursor,
+            newsTransitionProgress: transitionProgress,
+            newsTransitionIntensity: StableFocusNewsTransition.intensity(progress: transitionProgress)
         )
     }
 
@@ -390,6 +457,17 @@ struct StableFocusPlaybackPlan: Equatable {
     ) -> Int {
         guard totalDuration > 0, elapsedTime > 0 else { return 0 }
         return max(0, Int(floor(elapsedTime / totalDuration)))
+    }
+
+    private static func cursorIsVisible(
+        elapsedTime: TimeInterval,
+        duration: TimeInterval
+    ) -> Bool {
+        guard duration > 0 else { return false }
+        let segmentDuration = duration / 6
+        guard segmentDuration > 0 else { return false }
+        let segment = min(5, max(0, Int(floor(elapsedTime / segmentDuration))))
+        return segment.isMultiple(of: 2)
     }
 }
 

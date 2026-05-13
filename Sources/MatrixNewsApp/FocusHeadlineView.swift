@@ -5,6 +5,7 @@ import MatrixNewsCore
 #endif
 
 struct TypewriterNewsView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var model: NewsViewModel
     @State private var startDate = Date()
     @State private var playbackCache = StableFocusPlaybackPlanCache()
@@ -19,6 +20,9 @@ struct TypewriterNewsView: View {
                 if let frame = playbackFrame(for: timeline.date, viewportSize: geometry.size) {
                     let marker = PlaybackRefreshMarker(frame: frame)
                     let layout = frame.layout
+                    let transitionIntensity = reduceMotion ? 0 : frame.newsTransitionIntensity
+                    let transitionProgress = reduceMotion ? 1 : frame.newsTransitionProgress
+                    let transitionSeed = frame.cycleIndex * 101 + frame.position * 17
                     ZStack {
                         FocusReadabilityScrim()
                             .frame(
@@ -47,7 +51,7 @@ struct TypewriterNewsView: View {
                                     reservedLines: layout.titleLines,
                                     visibleLines: layout.visibleTitleLines(
                                         characterCount: frame.revealedTitleCharacterCount,
-                                        showsCursor: showsTitleCursor(frame: frame, layout: layout)
+                                        showsCursor: showsTitleCursor(frame: frame)
                                     ),
                                     width: layout.readingFrame.width,
                                     lineHeight: layout.metrics.titleLineHeight,
@@ -62,7 +66,7 @@ struct TypewriterNewsView: View {
                                     reservedLines: layout.summaryLines,
                                     visibleLines: layout.visibleSummaryLines(
                                         characterCount: frame.revealedSummaryCharacterCount,
-                                        showsCursor: showsSummaryCursor(frame: frame, layout: layout)
+                                        showsCursor: showsSummaryCursor(frame: frame)
                                     ),
                                     width: layout.readingFrame.width,
                                     lineHeight: layout.metrics.summaryLineHeight,
@@ -79,6 +83,26 @@ struct TypewriterNewsView: View {
                             height: layout.readingFrame.height,
                             alignment: .topLeading
                         )
+                        .opacity(1 - transitionIntensity * 0.08)
+                        .offset(
+                            x: MatrixNewsHandoffMotion.horizontalOffset(
+                                intensity: transitionIntensity,
+                                progress: transitionProgress,
+                                seed: transitionSeed
+                            ),
+                            y: CGFloat(-1.4 * transitionIntensity)
+                        )
+                        .overlay(alignment: .topLeading) {
+                            MatrixNewsHandoffOverlay(
+                                intensity: transitionIntensity,
+                                progress: transitionProgress,
+                                seed: transitionSeed
+                            )
+                            .frame(
+                                width: layout.readingFrame.width,
+                                height: layout.readingFrame.height
+                            )
+                        }
                     }
                     .position(x: layout.readingFrame.midX, y: layout.readingFrame.midY)
                     .onAppear {
@@ -124,14 +148,12 @@ struct TypewriterNewsView: View {
         )
     }
 
-    private func showsTitleCursor(frame: StableFocusTypewriterFrame, layout: StableFocusTextLayout) -> Bool {
-        !frame.isPaused && frame.revealedTitleCharacterCount < layout.titleCharacterCount
+    private func showsTitleCursor(frame: StableFocusTypewriterFrame) -> Bool {
+        frame.cursorTarget == .title && frame.showsCursor
     }
 
-    private func showsSummaryCursor(frame: StableFocusTypewriterFrame, layout: StableFocusTextLayout) -> Bool {
-        !frame.isPaused
-            && frame.revealedTitleCharacterCount == layout.titleCharacterCount
-            && frame.revealedSummaryCharacterCount < layout.summaryCharacterCount
+    private func showsSummaryCursor(frame: StableFocusTypewriterFrame) -> Bool {
+        frame.cursorTarget == .summary && frame.showsCursor
     }
 
     private func observePlayback(_ marker: PlaybackRefreshMarker) {
@@ -243,6 +265,109 @@ private struct StableFocusLineStack: View {
                     .clipped()
             }
         }
+    }
+}
+
+private enum MatrixNewsHandoffMotion {
+    static func horizontalOffset(
+        intensity: Double,
+        progress: Double,
+        seed: Int
+    ) -> CGFloat {
+        guard intensity > 0.001 else { return 0 }
+        let direction = seed.isMultiple(of: 2) ? 1.0 : -1.0
+        let pulse = abs(sin(progress * .pi * 14 + Double(seed % 7)))
+        return CGFloat(direction * intensity * (1.0 + pulse * 2.2))
+    }
+}
+
+private struct MatrixNewsHandoffOverlay: View {
+    var intensity: Double
+    var progress: Double
+    var seed: Int
+
+    var body: some View {
+        GeometryReader { proxy in
+            if intensity > 0.001 {
+                ZStack(alignment: .topLeading) {
+                    Rectangle()
+                        .fill(Color.green.opacity(0.045 * intensity))
+
+                    ForEach(0..<3, id: \.self) { index in
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        .clear,
+                                        Color.green.opacity(bandOpacity(index)),
+                                        .white.opacity(0.05 * intensity),
+                                        Color.green.opacity(bandOpacity(index) * 0.5),
+                                        .clear
+                                    ],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(
+                                width: bandWidth(index, containerWidth: proxy.size.width),
+                                height: bandHeight(index, containerHeight: proxy.size.height)
+                            )
+                            .offset(
+                                x: bandX(index, containerWidth: proxy.size.width),
+                                y: bandY(index, containerHeight: proxy.size.height)
+                            )
+                    }
+
+                    Rectangle()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    .clear,
+                                    Color.green.opacity(0.18 * intensity),
+                                    .white.opacity(0.09 * intensity),
+                                    .clear
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(
+                            width: proxy.size.width,
+                            height: max(1, proxy.size.height * 0.006)
+                        )
+                        .offset(y: proxy.size.height * CGFloat(progress))
+                }
+                .frame(width: proxy.size.width, height: proxy.size.height, alignment: .topLeading)
+                .clipped()
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
+    private func bandOpacity(_ index: Int) -> Double {
+        intensity * max(0.05, 0.14 - Double(index) * 0.025)
+    }
+
+    private func bandWidth(_ index: Int, containerWidth: CGFloat) -> CGFloat {
+        let variation = CGFloat((seed + index * 13) % 4) * 0.08
+        return containerWidth * (0.46 + variation)
+    }
+
+    private func bandHeight(_ index: Int, containerHeight: CGFloat) -> CGFloat {
+        max(1, min(4, containerHeight * (0.0036 + CGFloat(index) * 0.0008)))
+    }
+
+    private func bandX(_ index: Int, containerWidth: CGFloat) -> CGFloat {
+        let direction: CGFloat = (seed + index).isMultiple(of: 2) ? 1 : -1
+        return direction * containerWidth * CGFloat((progress - 0.5) * 0.11)
+    }
+
+    private func bandY(_ index: Int, containerHeight: CGFloat) -> CGFloat {
+        guard containerHeight > 0 else { return 0 }
+        let lane = Double((seed * 31 + index * 29) % 100) / 100
+        let drift = progress * (0.10 + Double(index) * 0.035)
+        let wrapped = (lane + drift).truncatingRemainder(dividingBy: 1)
+        return containerHeight * CGFloat(wrapped)
     }
 }
 

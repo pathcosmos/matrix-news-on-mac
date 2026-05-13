@@ -167,6 +167,186 @@ struct StableFocusTextLayoutTests {
         #expect(secondCycle?.position == 1)
     }
 
+    @Test("stable playback reports a short transition at each news handoff")
+    func stablePlaybackReportsShortTransitionAtEachNewsHandoff() {
+        let first = newsItem(title: "첫 번째", summary: "요약")
+        let second = newsItem(title: "두 번째", summary: "다음 요약")
+        let configuration = TypewriterPlaybackConfiguration(
+            titleCharactersPerSecond: 10,
+            summaryCharactersPerSecond: 10,
+            titlePauseDuration: 1,
+            summaryPauseDuration: 1
+        )
+        let playback = StableFocusTypewriterPlayback(configuration: configuration)
+        let viewportSize = CGSize(width: 640, height: 480)
+        let firstLayout = StableFocusTextLayout(item: first, viewportSize: viewportSize)
+        let firstDuration = Double(firstLayout.titleCharacterCount) / 10
+            + 1
+            + Double(firstLayout.summaryCharacterCount) / 10
+            + 1
+
+        let handoff = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: firstDuration + 0.05
+        )
+        let afterHandoff = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: firstDuration + StableFocusNewsTransition.duration + 0.1
+        )
+
+        #expect(handoff?.item.id == second.id)
+        #expect(handoff?.newsTransitionProgress ?? 1 > 0)
+        #expect(handoff?.newsTransitionProgress ?? 0 < 1)
+        #expect(handoff?.newsTransitionIntensity ?? 0 > 0)
+        #expect(afterHandoff?.item.id == second.id)
+        #expect(afterHandoff?.newsTransitionProgress == 1)
+        #expect(afterHandoff?.newsTransitionIntensity == 0)
+    }
+
+    @Test("completed title keeps cursor at line end")
+    func completedTitleKeepsCursorAtLineEnd() {
+        let item = newsItem(title: "제목", summary: "본문")
+        let layout = StableFocusTextLayout(
+            item: item,
+            viewportSize: CGSize(width: 640, height: 480)
+        )
+
+        let lines = layout.visibleTitleLines(
+            characterCount: layout.titleCharacterCount,
+            showsCursor: true
+        )
+
+        #expect(lines.joined().contains("▌"))
+    }
+
+    @Test("stable playback blinks cursor three times after title before summary")
+    func stablePlaybackBlinksCursorThreeTimesAfterTitleBeforeSummary() {
+        let item = newsItem(title: "제목", summary: "본문")
+        let configuration = TypewriterPlaybackConfiguration(
+            titleCharactersPerSecond: 2,
+            summaryCharactersPerSecond: 2,
+            titlePauseDuration: 1.2,
+            summaryPauseDuration: 1.2
+        )
+        let playback = StableFocusTypewriterPlayback(configuration: configuration)
+        let viewportSize = CGSize(width: 640, height: 480)
+        let layout = StableFocusTextLayout(item: item, viewportSize: viewportSize)
+        let titleDuration = Double(layout.titleCharacterCount) / 2
+
+        let firstOn = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 0.05
+        )
+        let firstOff = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 0.25
+        )
+        let secondOn = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 0.45
+        )
+        let secondOff = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 0.65
+        )
+        let thirdOn = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 0.85
+        )
+        let thirdOff = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 1.05
+        )
+        let summaryStarted = playback.frame(
+            for: [item],
+            viewportSize: viewportSize,
+            elapsedTime: titleDuration + 1.75
+        )
+
+        #expect(firstOn?.cursorTarget == .title)
+        #expect(firstOn?.showsCursor == true)
+        #expect(firstOff?.cursorTarget == .title)
+        #expect(firstOff?.showsCursor == false)
+        #expect(secondOn?.showsCursor == true)
+        #expect(secondOff?.showsCursor == false)
+        #expect(thirdOn?.showsCursor == true)
+        #expect(thirdOff?.showsCursor == false)
+        #expect(summaryStarted?.cursorTarget == .summary)
+        #expect(summaryStarted?.revealedSummaryCharacterCount ?? 0 > 0)
+    }
+
+    @Test("stable playback blinks cursor three times after summary before next news")
+    func stablePlaybackBlinksCursorThreeTimesAfterSummaryBeforeNextNews() {
+        let first = newsItem(title: "제목", summary: "본문")
+        let second = newsItem(title: "다음", summary: "다음 본문")
+        let configuration = TypewriterPlaybackConfiguration(
+            titleCharactersPerSecond: 2,
+            summaryCharactersPerSecond: 2,
+            titlePauseDuration: 1.2,
+            summaryPauseDuration: 1.2
+        )
+        let playback = StableFocusTypewriterPlayback(configuration: configuration)
+        let viewportSize = CGSize(width: 640, height: 480)
+        let layout = StableFocusTextLayout(item: first, viewportSize: viewportSize)
+        let summaryPauseStart = Double(layout.titleCharacterCount) / 2
+            + 1.2
+            + Double(layout.summaryCharacterCount) / 2
+
+        let firstOn = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 0.05
+        )
+        let firstOff = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 0.25
+        )
+        let secondOn = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 0.45
+        )
+        let secondOff = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 0.65
+        )
+        let thirdOn = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 0.85
+        )
+        let thirdOff = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 1.05
+        )
+        let nextNews = playback.frame(
+            for: [first, second],
+            viewportSize: viewportSize,
+            elapsedTime: summaryPauseStart + 1.25
+        )
+
+        #expect(firstOn?.cursorTarget == .summary)
+        #expect(firstOn?.showsCursor == true)
+        #expect(firstOff?.showsCursor == false)
+        #expect(secondOn?.showsCursor == true)
+        #expect(secondOff?.showsCursor == false)
+        #expect(thirdOn?.showsCursor == true)
+        #expect(thirdOff?.showsCursor == false)
+        #expect(nextNews?.item.id == second.id)
+        #expect(nextNews?.position == 2)
+    }
+
     private func newsItem(title: String, summary: String) -> NewsItem {
         NewsItem(
             id: title,
