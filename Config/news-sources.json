@@ -1,0 +1,85 @@
+[
+  {
+    "categories" : [
+      "politics",
+      "economy",
+      "society",
+      "international",
+      "culture",
+      "technology",
+      "sports"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/operate/common/main/topnews/headline_news.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-headline",
+    "licenseStatus" : "test-only"
+  },
+  {
+    "categories" : [
+      "politics"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/news/@@YEAR@@/politics/newest.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-politics",
+    "licenseStatus" : "test-only"
+  },
+  {
+    "categories" : [
+      "society"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/news/@@YEAR@@/society/newest.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-society",
+    "licenseStatus" : "test-only"
+  },
+  {
+    "categories" : [
+      "international"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/news/@@YEAR@@/world/newest.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-world",
+    "licenseStatus" : "test-only"
+  },
+  {
+    "categories" : [
+      "economy"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/news/@@YEAR@@/econo/newest.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-economy",
+    "licenseStatus" : "test-only"
+  },
+  {
+    "categories" : [
+      "culture"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/news/@@YEAR@@/culture/newest.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-culture",
+    "licenseStatus" : "test-only"
+  },
+  {
+    "categories" : [
+      "sports"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/news/@@YEAR@@/sports/newest.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-sports",
+    "licenseStatus" : "test-only"
+  }
+]

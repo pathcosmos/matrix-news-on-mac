@@ -1,0 +1,59 @@
+{
+  "generatedAt" : "2026-05-13T03:00:00Z",
+  "items" : [
+    {
+      "category" : "politics",
+      "id" : "mbc-headline-6822061",
+      "keywords" : [
+        "김민석",
+        "총리",
+        "삼성전자",
+        "노사",
+        "대화",
+        "지원",
+        "당부"
+      ],
+      "publishedAt" : "2026-05-13T02:40:00Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "삼성전자의 노사 협상이 결렬된 가운데 정부가 파업으로 이어지지 않도록 대화 지원을 주문했습니다.",
+      "title" : "김민석 총리, 삼성전자 노사 대화 지원 당부",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6822061_36911.html"
+    },
+    {
+      "category" : "international",
+      "id" : "mbc-headline-6822098",
+      "keywords" : [
+        "트럼프",
+        "시진핑",
+        "회담",
+        "LNG",
+        "직항",
+        "재개"
+      ],
+      "publishedAt" : "2026-05-13T02:35:00Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "미중 정상회담을 앞두고 미국산 액화천연가스 선박이 1년여 만에 중국으로 향했습니다.",
+      "title" : "트럼프-시진핑 회담 앞두고 LNG 직항 재개",
+      "url" : "https://imnews.imbc.com/news/2026/world/article/6822098_36925.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-headline-6822063",
+      "keywords" : [
+        "국회부의장",
+        "후보",
+        "박덕흠",
+        "의원",
+        "선출"
+      ],
+      "publishedAt" : "2026-05-13T02:25:00Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "국민의힘이 야당 몫 국회부의장 후보로 4선의 박덕흠 의원을 선출했습니다.",
+      "title" : "국회부의장 후보에 박덕흠 의원 선출",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6822063_36911.html"
+    }
+  ]
+}

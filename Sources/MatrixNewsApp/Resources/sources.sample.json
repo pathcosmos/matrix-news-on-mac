@@ -1,0 +1,19 @@
+[
+  {
+    "categories" : [
+      "politics",
+      "economy",
+      "society",
+      "international",
+      "culture",
+      "technology",
+      "sports"
+    ],
+    "defaultEnabled" : true,
+    "displayName" : "MBC",
+    "feedURL" : "https://imnews.imbc.com/operate/common/main/topnews/headline_news.js",
+    "homepageURL" : "https://imnews.imbc.com",
+    "id" : "mbc-headline",
+    "licenseStatus" : "test-only"
+  }
+]
