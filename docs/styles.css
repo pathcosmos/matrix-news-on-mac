@@ -41,13 +41,19 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: clamp(24px, 6vw, 96px);
   z-index: 1;
   pointer-events: none;
   text-shadow:
     0 2px 14px rgba(0, 0, 0, 0.92),
     0 0 10px rgba(20, 230, 56, 0.34);
+}
+
+#title, #summary, #meta {
+  width: 100%;
+  max-width: min(1100px, 88vw);
+  margin-inline: auto;
 }
 
 #stage::before {
@@ -88,6 +94,8 @@ html, body {
   letter-spacing: -0.005em;
   max-width: min(1100px, 88vw);
   word-break: keep-all;
+  height: calc(1.18em * 3);
+  overflow: hidden;
 }
 
 #summary {
@@ -96,8 +104,10 @@ html, body {
   line-height: 1.55;
   font-weight: 400;
   color: var(--text-summary);
-  max-width: min(1000px, 78vw);
+  max-width: min(1100px, 88vw);
   word-break: keep-all;
+  height: calc(1.55em * 5);
+  overflow: hidden;
 }
 
 .cursor {

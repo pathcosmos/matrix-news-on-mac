@@ -79,11 +79,11 @@ function hash2(a, b) {
 }
 
 function rebuildColumns() {
-  columnsByLayer = LAYERS.map((layer) => {
+  columnsByLayer = LAYERS.map((layer, li) => {
     const cols = Math.ceil(cssW / layer.columnWidth) + 1;
     return Array.from({ length: cols }, (_, c) => ({
-      speedMul: 0.78 + (hash2(c, 271) % 10000) / 10000 * 0.55,
-      rowOffset: (hash2(c, 9931) % 10000) / 10000,
+      speedMul: 0.55 + (hash2(c + li * 173, 271) % 10000) / 10000 * 1.05,
+      rowOffset: (hash2(c + li * 521, 9931) % 10000) / 10000,
     }));
   });
 }
@@ -163,9 +163,10 @@ function colorFor(distance) {
 }
 
 function pickGlyph(col, row, timeSec) {
-  // Each cell holds a glyph for ~0.6s before swapping; offset by cell so swaps stagger.
-  const swapBucket = Math.floor(timeSec * 1.6 + ((col * 13 + row * 7) % 5));
-  const idx = hash2(col * 131 + row, swapBucket * 911) % GLYPHS.length;
+  // Glyph at (col, row) is mostly stable so rain reads as a falling stream rather than
+  // a flickering grid. Each cell does a slow drift swap every ~6s, staggered per cell.
+  const slowTick = Math.floor(timeSec / 6 + ((col * 13 + row * 7) & 0xff) / 256);
+  const idx = hash2(col * 131 + 9001, row * 47 + slowTick * 911) % GLYPHS.length;
   return GLYPHS[idx];
 }
 
