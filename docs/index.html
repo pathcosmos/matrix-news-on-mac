@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <title>Matrix News</title>
+  <meta name="description" content="Matrix-style Korean news viewer." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="rain" aria-hidden="true"></canvas>
+
+  <main id="stage" aria-live="polite">
+    <header id="meta">
+      <span id="meta-source">MBC</span>
+      <span id="meta-time">--:--</span>
+      <span id="meta-position">0/0</span>
+    </header>
+    <h1 id="title"><span id="title-text"></span><span class="cursor" id="title-cursor" hidden></span></h1>
+    <p id="summary"><span id="summary-text"></span><span class="cursor" id="summary-cursor" hidden></span></p>
+    <p id="status" hidden>뉴스를 불러오는 중…</p>
+  </main>
+
+  <a id="source-link" href="#" target="_blank" rel="noopener noreferrer" hidden>원문 보기 →</a>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
