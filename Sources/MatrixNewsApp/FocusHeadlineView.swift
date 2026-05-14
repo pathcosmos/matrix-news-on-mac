@@ -15,7 +15,7 @@ struct TypewriterNewsView: View {
     var playbackRevision: Int = 0
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1.0 / 24.0)) { timeline in
+        TimelineView(.periodic(from: .now, by: 1.0 / 20.0)) { timeline in
             GeometryReader { geometry in
                 if let frame = playbackFrame(for: timeline.date, viewportSize: geometry.size) {
                     let marker = PlaybackRefreshMarker(frame: frame)
@@ -59,6 +59,7 @@ struct TypewriterNewsView: View {
                                     weight: .semibold,
                                     color: Color(red: 0.82, green: 1.0, blue: 0.82).opacity(0.98)
                                 )
+                                .compositingGroup()
                                 .shadow(color: .black.opacity(0.92), radius: 14, y: 3)
                                 .shadow(color: .green.opacity(0.64), radius: 10)
 
@@ -74,6 +75,7 @@ struct TypewriterNewsView: View {
                                     weight: .regular,
                                     color: .white.opacity(0.9)
                                 )
+                                .compositingGroup()
                                 .shadow(color: .black.opacity(0.9), radius: 12, y: 3)
                                 .shadow(color: .green.opacity(0.34), radius: 6)
                             }

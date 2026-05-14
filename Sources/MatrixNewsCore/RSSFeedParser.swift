@@ -139,35 +139,53 @@ private struct PartialRSSItem {
 }
 
 public enum SummaryCleaner {
+    private static let footerRegexes: [NSRegularExpression] = {
+        [
+            #"(?is)MBC\s*뉴스는\s*24시간\s*여러분의\s*제보를\s*기다립니다\.?.*$"#,
+            #"(?is)▷\s*전화\s*02-784-4000.*$"#,
+            #"(?is)▷\s*이메일\s*mbcjebo@mbc\.co\.kr.*$"#
+        ].compactMap { try? NSRegularExpression(pattern: $0) }
+    }()
+
+    private static let htmlTagRegex: NSRegularExpression = {
+        try! NSRegularExpression(pattern: "<[^>]+>")
+    }()
+
+    private static let whitespaceRegex: NSRegularExpression = {
+        try! NSRegularExpression(pattern: "\\s+")
+    }()
+
     public static func clean(_ value: String) -> String? {
-        let withoutFooters = value
-            .replacingOccurrences(
-                of: #"(?is)MBC\s*뉴스는\s*24시간\s*여러분의\s*제보를\s*기다립니다\.?.*$"#,
-                with: " ",
-                options: .regularExpression
+        var working = value
+        for regex in footerRegexes {
+            working = regex.stringByReplacingMatches(
+                in: working,
+                options: [],
+                range: NSRange(working.startIndex..<working.endIndex, in: working),
+                withTemplate: " "
             )
-            .replacingOccurrences(
-                of: #"(?is)▷\s*전화\s*02-784-4000.*$"#,
-                with: " ",
-                options: .regularExpression
-            )
-            .replacingOccurrences(
-                of: #"(?is)▷\s*이메일\s*mbcjebo@mbc\.co\.kr.*$"#,
-                with: " ",
-                options: .regularExpression
-            )
-        let withoutTags = withoutFooters
-            .replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression)
+        }
+        working = htmlTagRegex.stringByReplacingMatches(
+            in: working,
+            options: [],
+            range: NSRange(working.startIndex..<working.endIndex, in: working),
+            withTemplate: " "
+        )
+        working = working
             .replacingOccurrences(of: "&nbsp;", with: " ")
             .replacingOccurrences(of: "&amp;", with: "&")
             .replacingOccurrences(of: "&lt;", with: "<")
             .replacingOccurrences(of: "&gt;", with: ">")
             .replacingOccurrences(of: "&quot;", with: "\"")
             .replacingOccurrences(of: "&#39;", with: "'")
-            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        working = whitespaceRegex.stringByReplacingMatches(
+            in: working,
+            options: [],
+            range: NSRange(working.startIndex..<working.endIndex, in: working),
+            withTemplate: " "
+        ).trimmingCharacters(in: .whitespacesAndNewlines)
 
-        return withoutTags.isEmpty ? nil : withoutTags
+        return working.isEmpty ? nil : working
     }
 }
 

@@ -118,7 +118,13 @@ struct MatrixRainGlyphAtlasLayout {
         var glyphSet = Set(glyphComposer.baseGlyphs)
         glyphSet.formUnion(glyphComposer.valueFragments.joined())
         glyphs = glyphSet.sorted { String($0) < String($1) }
-        let entryCount = max(1, glyphs.count * MatrixRainDepthLayer.allCases.count * MatrixRainMetalGlyphStyle.allCases.count)
+
+        let stylesByLayer: [MatrixRainDepthLayer: [MatrixRainMetalGlyphStyle]] = Dictionary(
+            uniqueKeysWithValues: MatrixRainDepthLayer.allCases.map { layer in
+                (layer, Self.atlasStyles(for: layer))
+            }
+        )
+        let entryCount = max(1, glyphs.count * stylesByLayer.values.reduce(0) { $0 + $1.count })
         let rows = Int(ceil(Double(entryCount) / Double(Self.columnCount)))
         let textureWidth = CGFloat(Self.columnCount) * Self.cellEdge
         let textureHeight = CGFloat(rows) * Self.cellEdge
@@ -135,7 +141,7 @@ struct MatrixRainGlyphAtlasLayout {
         var index = 0
         for glyph in glyphs {
             for layer in MatrixRainDepthLayer.allCases {
-                for style in MatrixRainMetalGlyphStyle.allCases {
+                for style in stylesByLayer[layer] ?? [] {
                     let column = index % Self.columnCount
                     let row = index / Self.columnCount
                     let pixelRect = CGRect(
@@ -163,6 +169,14 @@ struct MatrixRainGlyphAtlasLayout {
                 }
             }
         }
+    }
+
+    static func atlasStyles(for layer: MatrixRainDepthLayer) -> [MatrixRainMetalGlyphStyle] {
+        // Distant layer has no head glow (see MatrixRainRenderPlan.optimizedHeadGlowOpacity).
+        if layer == .distant {
+            return [.body, .head]
+        }
+        return MatrixRainMetalGlyphStyle.allCases
     }
 
     func entry(
@@ -212,6 +226,7 @@ private extension MatrixRainDepthLayer {
 
 struct MatrixRainMetalStaticInstancePlan {
     var instances: [MatrixRainMetalStaticInstance]
+    var layerParams: [MatrixRainMetalLayerParams]
     var baseGlyphAtlasIndices: [UInt32]
     var valueGlyphAtlasIndices: [UInt32]
 
@@ -227,6 +242,22 @@ struct MatrixRainMetalStaticInstancePlan {
         valueGlyphAtlasIndices = Array(glyphComposer.valueFragments.joined()).compactMap {
             layout.glyphIndex(for: $0)
         }
+
+        var perLayer = Array(
+            repeating: MatrixRainMetalLayerParams(rows: 1, tailLength: 1, columnWidth: 1, rowHeight: 1),
+            count: MatrixRainDepthLayer.allCases.count
+        )
+        for layerPlan in renderPlan.layers {
+            let id = layerPlan.layer.metalAtlasLayerID
+            perLayer[id] = MatrixRainMetalLayerParams(
+                rows: Float(layerPlan.rows),
+                tailLength: Float(layerPlan.layer.tailLength),
+                columnWidth: Float(layerPlan.layer.columnWidth),
+                rowHeight: Float(layerPlan.layer.rowHeight)
+            )
+        }
+        layerParams = perLayer
+
         instances = []
         instances.reserveCapacity(renderPlan.estimatedMetalInstances)
 
@@ -292,10 +323,6 @@ struct MatrixRainMetalStaticInstancePlan {
         return MatrixRainMetalStaticInstance(
             column: Float(column),
             distance: Float(distance),
-            rows: Float(layerPlan.rows),
-            tailLength: Float(layer.tailLength),
-            columnWidth: Float(layer.columnWidth),
-            rowHeight: Float(layer.rowHeight),
             speedRowsPerSecond: Float(motion.speedRowsPerSecond),
             phaseRows: Float(motion.phaseRows),
             gapRows: Float(motion.gapRows),
@@ -305,36 +332,28 @@ struct MatrixRainMetalStaticInstancePlan {
             layerID: Float(layer.metalAtlasLayerID),
             styleID: Float(style.atlasStyleID),
             color: color,
-            size: SIMD2(Float(MatrixRainGlyphAtlasLayout.cellEdge), Float(MatrixRainGlyphAtlasLayout.cellEdge)),
             padding: .zero
         )
     }
 
     private static func glyphColor(distance: Int, opacity: Double) -> SIMD4<Float> {
-        let rgb: SIMD3<Float>
-        if distance == 0 {
-            rgb = SIMD3(0.91, 1.0, 0.82)
-        } else if distance <= 3 {
-            rgb = SIMD3(0.58, 1.0, 0.48)
-        } else {
-            rgb = SIMD3(0.08, 0.90, 0.22)
-        }
-
-        return SIMD4(rgb.x, rgb.y, rgb.z, Float(opacity))
+        MatrixRainGlyphRGB.forDistanceFromHead(distance).simd4(opacity: opacity)
     }
 
     private static func headGlowColor(opacity: Double) -> SIMD4<Float> {
-        SIMD4(0.72, 1.0, 0.62, Float(opacity))
+        MatrixRainGlyphRGB.headGlow.simd4(opacity: opacity)
+    }
+}
+
+private extension MatrixRainGlyphRGB {
+    func simd4(opacity: Double) -> SIMD4<Float> {
+        SIMD4(Float(red), Float(green), Float(blue), Float(opacity))
     }
 }
 
 struct MatrixRainMetalStaticInstance {
     var column: Float
     var distance: Float
-    var rows: Float
-    var tailLength: Float
-    var columnWidth: Float
-    var rowHeight: Float
     var speedRowsPerSecond: Float
     var phaseRows: Float
     var gapRows: Float
@@ -344,8 +363,14 @@ struct MatrixRainMetalStaticInstance {
     var layerID: Float
     var styleID: Float
     var color: SIMD4<Float>
-    var size: SIMD2<Float>
     var padding: SIMD2<Float>
+}
+
+struct MatrixRainMetalLayerParams {
+    var rows: Float
+    var tailLength: Float
+    var columnWidth: Float
+    var rowHeight: Float
 }
 
 #if os(macOS)
@@ -503,6 +528,7 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
     private var cachedPlan: MatrixRainRenderPlan?
     private var cachedStaticPlan: MatrixRainMetalStaticInstancePlan?
     private var staticInstanceBuffer: MTLBuffer?
+    private var layerParamsBuffer: MTLBuffer?
     private var baseGlyphIndexBuffer: MTLBuffer?
     private var valueGlyphIndexBuffer: MTLBuffer?
     private let animationStartSeconds = ProcessInfo.processInfo.systemUptime
@@ -563,6 +589,7 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         cachedPlan = nil
         cachedStaticPlan = nil
         staticInstanceBuffer = nil
+        layerParamsBuffer = nil
         baseGlyphIndexBuffer = nil
         valueGlyphIndexBuffer = nil
     }
@@ -618,6 +645,7 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         ensureStaticBuffers(staticPlan: staticPlan)
         if !staticPlan.instances.isEmpty,
            let instanceBuffer = staticInstanceBuffer,
+           let layerParamsBuffer,
            let baseGlyphIndexBuffer,
            let valueGlyphIndexBuffer {
             encoder.setRenderPipelineState(glyphPipeline)
@@ -625,6 +653,7 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
             encoder.setVertexBytes(&uniforms, length: MemoryLayout<MatrixRainMetalUniforms>.stride, index: 1)
             encoder.setVertexBuffer(baseGlyphIndexBuffer, offset: 0, index: 2)
             encoder.setVertexBuffer(valueGlyphIndexBuffer, offset: 0, index: 3)
+            encoder.setVertexBuffer(layerParamsBuffer, offset: 0, index: 4)
             encoder.setFragmentTexture(glyphAtlas.texture, index: 0)
             encoder.setFragmentSamplerState(samplerState, index: 0)
             encoder.drawPrimitives(
@@ -668,6 +697,7 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         guard staticInstanceBuffer == nil else { return }
 
         staticInstanceBuffer = makeBuffer(from: staticPlan.instances)
+        layerParamsBuffer = makeBuffer(from: staticPlan.layerParams)
         baseGlyphIndexBuffer = makeBuffer(from: staticPlan.baseGlyphAtlasIndices)
         valueGlyphIndexBuffer = makeBuffer(from: staticPlan.valueGlyphAtlasIndices)
     }
@@ -751,10 +781,6 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
     struct Instance {
         float column;
         float distance;
-        float rows;
-        float tailLength;
-        float columnWidth;
-        float rowHeight;
         float speedRowsPerSecond;
         float phaseRows;
         float gapRows;
@@ -764,8 +790,14 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         float layerID;
         float styleID;
         float4 color;
-        float2 size;
         float2 padding;
+    };
+
+    struct LayerParams {
+        float rows;
+        float tailLength;
+        float columnWidth;
+        float rowHeight;
     };
 
     struct GlyphOut {
@@ -811,7 +843,8 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         const device Instance *instances [[buffer(0)]],
         constant Uniforms &uniforms [[buffer(1)]],
         const device uint *baseGlyphIndices [[buffer(2)]],
-        const device uint *valueGlyphIndices [[buffer(3)]]
+        const device uint *valueGlyphIndices [[buffer(3)]],
+        const device LayerParams *layerParams [[buffer(4)]]
     ) {
         float2 corners[4] = {
             float2(-0.5, -0.5),
@@ -827,14 +860,15 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         };
 
         Instance instance = instances[instanceID];
-        float cycleRows = max(1.0, instance.rows + instance.gapRows);
+        LayerParams layer = layerParams[uint(max(0.0, instance.layerID))];
+        float cycleRows = max(1.0, layer.rows + instance.gapRows);
         float headProgress = positiveRemainder(
             instance.phaseRows + uniforms.time * instance.speedRowsPerSecond,
             cycleRows
         );
         int row = positiveModulo(
             int(floor(headProgress)) + int(round(instance.distance)),
-            int(max(1.0, instance.rows))
+            int(max(1.0, layer.rows))
         );
         int column = int(round(instance.column));
         int tick = int(floor(uniforms.time * 2.0));
@@ -855,15 +889,16 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         float2 uvOrigin = (cellOrigin + uniforms.atlasInset) / float2(uniforms.atlasWidth, uniforms.atlasHeight);
         float2 uvSize = (float2(uniforms.atlasCellEdge - uniforms.atlasInset * 2.0)) / float2(uniforms.atlasWidth, uniforms.atlasHeight);
 
-        float x = instance.column * instance.columnWidth
-            + instance.columnWidth * 0.5
-            + sin(uniforms.time * instance.driftRate + instance.driftPhase) * instance.columnWidth * instance.driftMagnitude;
-        float y = (headProgress + instance.distance - instance.tailLength) * instance.rowHeight;
+        float x = instance.column * layer.columnWidth
+            + layer.columnWidth * 0.5
+            + sin(uniforms.time * instance.driftRate + instance.driftPhase) * layer.columnWidth * instance.driftMagnitude;
+        float y = (headProgress + instance.distance - layer.tailLength) * layer.rowHeight;
 
         uint orientation = orientationHash(column, row);
         float2 orientationScale = float2((orientation % 29u) == 0u ? -1.0 : 1.0, (orientation % 997u) == 0u ? -1.0 : 1.0);
+        float2 glyphSize = float2(uniforms.atlasCellEdge);
         float2 pixel = float2(x, y) * uniforms.pointScale
-            + corners[vertexID] * instance.size * uniforms.pointScale * orientationScale;
+            + corners[vertexID] * glyphSize * uniforms.pointScale * orientationScale;
         float2 viewport = max(uniforms.viewportSize, float2(1.0, 1.0));
         float2 clip = float2(
             pixel.x / viewport.x * 2.0 - 1.0,
@@ -882,7 +917,7 @@ private final class MatrixRainMetalRenderer: NSObject, MTKViewDelegate {
         texture2d<float> atlas [[texture(0)]],
         sampler atlasSampler [[sampler(0)]]
     ) {
-        float alpha = atlas.sample(atlasSampler, in.uv).a * in.color.a;
+        float alpha = atlas.sample(atlasSampler, in.uv).r * in.color.a;
         return float4(in.color.rgb, alpha);
     }
     """
@@ -912,25 +947,6 @@ private enum MatrixRainMetalRendererError: Error {
     case shaderFunctionUnavailable
 }
 
-private enum MatrixRainMetalColor {
-    static func glyph(distance: Int, opacity: Double) -> SIMD4<Float> {
-        let rgb: SIMD3<Float>
-        if distance == 0 {
-            rgb = SIMD3(0.91, 1.0, 0.82)
-        } else if distance <= 3 {
-            rgb = SIMD3(0.58, 1.0, 0.48)
-        } else {
-            rgb = SIMD3(0.08, 0.90, 0.22)
-        }
-
-        return SIMD4(rgb.x, rgb.y, rgb.z, Float(opacity))
-    }
-
-    static func headGlow(opacity: Double) -> SIMD4<Float> {
-        SIMD4(0.72, 1.0, 0.62, Float(opacity))
-    }
-}
-
 private final class MatrixRainGlyphAtlas {
     let layout: MatrixRainGlyphAtlasLayout
     let texture: MTLTexture
@@ -941,48 +957,55 @@ private final class MatrixRainGlyphAtlas {
 
         let width = Int(atlasLayout.textureSize.width.rounded(.up))
         let height = Int(atlasLayout.textureSize.height.rounded(.up))
-        let bytesPerPixel = 4
+        let bytesPerPixel = 1
         let bytesPerRow = width * bytesPerPixel
-        var pixels = [UInt8](repeating: 0, count: height * bytesPerRow)
+        let byteCount = height * bytesPerRow
+        let rawPixels = UnsafeMutableRawPointer.allocate(byteCount: byteCount, alignment: 16)
+        defer { rawPixels.deallocate() }
+        memset(rawPixels, 0, byteCount)
 
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue
+        let colorSpace = CGColorSpaceCreateDeviceGray()
+        let bitmapInfo = CGImageAlphaInfo.none.rawValue
 
-        pixels.withUnsafeMutableBytes { rawBuffer in
-            guard let context = CGContext(
-                data: rawBuffer.baseAddress,
-                width: width,
-                height: height,
-                bitsPerComponent: 8,
-                bytesPerRow: bytesPerRow,
-                space: colorSpace,
-                bitmapInfo: bitmapInfo
-            ) else {
-                return
-            }
+        guard let context = CGContext(
+            data: rawPixels,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo
+        ) else {
+            throw MatrixRainGlyphAtlasError.textureUnavailable
+        }
 
-            context.setAllowsAntialiasing(true)
-            context.setShouldAntialias(true)
-            context.setAllowsFontSmoothing(true)
-            context.setShouldSmoothFonts(true)
+        context.setAllowsAntialiasing(true)
+        context.setShouldAntialias(true)
+        context.setAllowsFontSmoothing(true)
+        context.setShouldSmoothFonts(true)
 
-            var glyphSet = Set(glyphComposer.baseGlyphs)
-            glyphSet.formUnion(glyphComposer.valueFragments.joined())
+        var glyphSet = Set(glyphComposer.baseGlyphs)
+        glyphSet.formUnion(glyphComposer.valueFragments.joined())
 
-            for glyph in glyphSet {
-                for layer in MatrixRainDepthLayer.allCases {
-                    for style in MatrixRainMetalGlyphStyle.allCases {
-                        guard let entry = atlasLayout.entry(for: glyph, layer: layer, style: style) else {
-                            continue
-                        }
-                        Self.drawGlyph(glyph, entry: entry, layer: layer, in: context)
+        let styleResources = Self.buildStyleResources(
+            atlasLayout: atlasLayout,
+            sampleGlyph: glyphSet.first
+        )
+
+        for glyph in glyphSet {
+            for layer in MatrixRainDepthLayer.allCases {
+                for style in MatrixRainMetalGlyphStyle.allCases {
+                    guard let entry = atlasLayout.entry(for: glyph, layer: layer, style: style),
+                          let resource = styleResources[LayerStyleKey(layer: layer, style: style)] else {
+                        continue
                     }
+                    Self.drawGlyph(glyph, entry: entry, layer: layer, resource: resource, in: context)
                 }
             }
         }
 
         let descriptor = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .rgba8Unorm,
+            pixelFormat: .r8Unorm,
             width: width,
             height: height,
             mipmapped: false
@@ -995,27 +1018,57 @@ private final class MatrixRainGlyphAtlas {
         texture.replace(
             region: MTLRegionMake2D(0, 0, width, height),
             mipmapLevel: 0,
-            withBytes: pixels,
+            withBytes: rawPixels,
             bytesPerRow: bytesPerRow
         )
         self.texture = texture
+    }
+
+    private struct LayerStyleKey: Hashable {
+        let layer: MatrixRainDepthLayer
+        let style: MatrixRainMetalGlyphStyle
+    }
+
+    private struct StyleResource {
+        let font: NSFont
+        let color: NSColor
+    }
+
+    private static func buildStyleResources(
+        atlasLayout: MatrixRainGlyphAtlasLayout,
+        sampleGlyph: Character?
+    ) -> [LayerStyleKey: StyleResource] {
+        guard let sample = sampleGlyph else { return [:] }
+        var result: [LayerStyleKey: StyleResource] = [:]
+        for layer in MatrixRainDepthLayer.allCases {
+            for style in MatrixRainMetalGlyphStyle.allCases {
+                guard let entry = atlasLayout.entry(for: sample, layer: layer, style: style) else {
+                    continue
+                }
+                let font = NSFont.monospacedSystemFont(
+                    ofSize: entry.fontSize,
+                    weight: entry.isBold ? .bold : .regular
+                )
+                let color = NSColor.white.withAlphaComponent(entry.isGlow ? 0.88 : 1.0)
+                result[LayerStyleKey(layer: layer, style: style)] = StyleResource(font: font, color: color)
+            }
+        }
+        return result
     }
 
     private static func drawGlyph(
         _ glyph: Character,
         entry: MatrixRainGlyphAtlasEntry,
         layer: MatrixRainDepthLayer,
+        resource: StyleResource,
         in context: CGContext
     ) {
         let rect = entry.pixelRect.integral
-        let fontWeight: NSFont.Weight = entry.isBold ? .bold : .regular
-        let font = NSFont.monospacedSystemFont(ofSize: entry.fontSize, weight: fontWeight)
-        let color = NSColor.white.withAlphaComponent(entry.isGlow ? 0.88 : 1.0)
         let attributed = NSAttributedString(
             string: String(glyph),
             attributes: [
-                .font: font,
-                .foregroundColor: color
+                .font: resource.font,
+                .foregroundColor: resource.color
             ]
         )
         let line = CTLineCreateWithAttributedString(attributed)

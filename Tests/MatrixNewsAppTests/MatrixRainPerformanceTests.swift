@@ -219,19 +219,26 @@ struct MatrixRainPerformanceTests {
         for glyph in glyphs {
             for layer in MatrixRainDepthLayer.allCases {
                 for style in MatrixRainMetalGlyphStyle.allCases {
-                    guard let entry = layout.entry(for: glyph, layer: layer, style: style) else {
-                        Issue.record("Missing atlas entry for \(glyph), \(layer), \(style)")
-                        continue
-                    }
+                    let expectedStyles = MatrixRainGlyphAtlasLayout.atlasStyles(for: layer)
+                    let entry = layout.entry(for: glyph, layer: layer, style: style)
 
-                    #expect(entry.uvRect.minX >= 0)
-                    #expect(entry.uvRect.minY >= 0)
-                    #expect(entry.uvRect.maxX <= 1)
-                    #expect(entry.uvRect.maxY <= 1)
-                    #expect(entry.uvRect.width > 0)
-                    #expect(entry.uvRect.height > 0)
-                    #expect(entry.pointSize.width > 0)
-                    #expect(entry.pointSize.height > 0)
+                    if expectedStyles.contains(style) {
+                        guard let entry else {
+                            Issue.record("Missing atlas entry for \(glyph), \(layer), \(style)")
+                            continue
+                        }
+
+                        #expect(entry.uvRect.minX >= 0)
+                        #expect(entry.uvRect.minY >= 0)
+                        #expect(entry.uvRect.maxX <= 1)
+                        #expect(entry.uvRect.maxY <= 1)
+                        #expect(entry.uvRect.width > 0)
+                        #expect(entry.uvRect.height > 0)
+                        #expect(entry.pointSize.width > 0)
+                        #expect(entry.pointSize.height > 0)
+                    } else {
+                        #expect(entry == nil)
+                    }
                 }
             }
         }

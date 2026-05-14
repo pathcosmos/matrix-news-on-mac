@@ -9,15 +9,17 @@ public enum KeywordExtractor {
 
     public static func keywords(from text: String, limit: Int = 8) -> [String] {
         var tokens: [String] = []
+        var seen = Set<String>()
         var current = ""
 
         func flush() {
             guard !current.isEmpty else { return }
             let token = current.lowercased()
-            if token.count > 1, !stopwords.contains(token), !tokens.contains(token) {
+            current = ""
+            guard token.count > 1, !stopwords.contains(token) else { return }
+            if seen.insert(token).inserted {
                 tokens.append(token)
             }
-            current = ""
         }
 
         for scalar in text.unicodeScalars {
@@ -25,6 +27,7 @@ public enum KeywordExtractor {
                 current.unicodeScalars.append(scalar)
             } else {
                 flush()
+                if tokens.count >= limit { return tokens }
             }
         }
         flush()

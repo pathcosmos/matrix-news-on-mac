@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 
 #if SWIFT_PACKAGE
@@ -12,33 +13,41 @@ final class NewsViewModel: ObservableObject {
     @Published private(set) var sourceOptions: [NewsSourceOption] = []
     @Published var selectedItemID: String?
     @Published private(set) var playbackRevision = 0
+    @Published private(set) var rankedItems: [NewsItem] = []
+    @Published private(set) var visibleItems: [NewsItem] = []
+    @Published private(set) var passiveDisplayItems: [NewsItem] = []
 
     private let syncStore = PreferenceSyncStore()
     private let engine = PersonalizationEngine()
     private let dataLoader: NewsDataLoader
     private var preparedNewsRefresh: NewsDataPayload?
     private var isPreparingNewsRefresh = false
+    private var derivedCancellable: AnyCancellable?
 
     init(dataLoader: NewsDataLoader = .appDefault()) {
         self.dataLoader = dataLoader
         settings = syncStore.loadSettings()
         preferences = syncStore.loadPreferences()
+
+        derivedCancellable = Publishers.CombineLatest3($allItems, $preferences, $settings)
+            .sink { [weak self] items, prefs, settings in
+                self?.refreshDerivedItems(items: items, preferences: prefs, settings: settings)
+            }
     }
 
-    var rankedItems: [NewsItem] {
-        engine.rank(
-            allItems,
+    private func refreshDerivedItems(
+        items: [NewsItem],
+        preferences: UserPreferences,
+        settings: ViewerSettings
+    ) {
+        let ranked = engine.rank(
+            items,
             preferences: preferences,
             enabledSourceIDs: settings.enabledSourceIDs
         )
-    }
-
-    var visibleItems: [NewsItem] {
-        Array(rankedItems.prefix(settings.visibleNewsCount))
-    }
-
-    var passiveDisplayItems: [NewsItem] {
-        Array(Self.newestFirst(allItems).prefix(50))
+        rankedItems = ranked
+        visibleItems = Array(ranked.prefix(settings.visibleNewsCount))
+        passiveDisplayItems = Array(items.prefix(50))
     }
 
     var selectedItem: NewsItem? {

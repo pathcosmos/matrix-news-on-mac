@@ -20,10 +20,14 @@ struct StableFocusTextMetrics: Equatable {
 }
 
 struct StableFocusTextLayout: Equatable {
-    var readingFrame: CGRect
-    var metrics: StableFocusTextMetrics
-    var titleLines: [String]
-    var summaryLines: [String]
+    let readingFrame: CGRect
+    let metrics: StableFocusTextMetrics
+    let titleLines: [String]
+    let summaryLines: [String]
+    let titleCharacterCount: Int
+    let summaryCharacterCount: Int
+    private let titleLineLengths: [Int]
+    private let summaryLineLengths: [Int]
 
     var fullTitle: String {
         titleLines.joined(separator: "\n").trimmingTrailingNewlines()
@@ -31,14 +35,6 @@ struct StableFocusTextLayout: Equatable {
 
     var fullSummary: String {
         summaryLines.joined(separator: "\n").trimmingTrailingNewlines()
-    }
-
-    var titleCharacterCount: Int {
-        titleLines.reduce(0) { $0 + $1.count }
-    }
-
-    var summaryCharacterCount: Int {
-        summaryLines.reduce(0) { $0 + $1.count }
     }
 
     init(
@@ -52,7 +48,7 @@ struct StableFocusTextLayout: Equatable {
         )
         readingFrame = metricsAndFrame.frame
         metrics = metricsAndFrame.metrics
-        titleLines = Self.wrap(
+        let titleLines = Self.wrap(
             item.title,
             maxLines: metrics.titleLineCount,
             fontSize: metrics.titleFontSize,
@@ -62,36 +58,58 @@ struct StableFocusTextLayout: Equatable {
         let summary = item.summary?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
             ? item.summary!.trimmingCharacters(in: .whitespacesAndNewlines)
             : item.url.absoluteString
-        summaryLines = Self.wrap(
+        let summaryLines = Self.wrap(
             summary,
             maxLines: metrics.summaryLineCount,
             fontSize: metrics.summaryFontSize,
             maxWidth: readingFrame.width
         )
+
+        let titleLengths = titleLines.map(\.count)
+        let summaryLengths = summaryLines.map(\.count)
+        self.titleLines = titleLines
+        self.summaryLines = summaryLines
+        self.titleLineLengths = titleLengths
+        self.summaryLineLengths = summaryLengths
+        self.titleCharacterCount = titleLengths.reduce(0, +)
+        self.summaryCharacterCount = summaryLengths.reduce(0, +)
     }
 
     func visibleTitleLines(characterCount: Int, showsCursor: Bool = false) -> [String] {
-        visibleLines(from: titleLines, characterCount: characterCount, showsCursor: showsCursor)
+        visibleLines(
+            from: titleLines,
+            lengths: titleLineLengths,
+            totalCount: titleCharacterCount,
+            characterCount: characterCount,
+            showsCursor: showsCursor
+        )
     }
 
     func visibleSummaryLines(characterCount: Int, showsCursor: Bool = false) -> [String] {
-        visibleLines(from: summaryLines, characterCount: characterCount, showsCursor: showsCursor)
+        visibleLines(
+            from: summaryLines,
+            lengths: summaryLineLengths,
+            totalCount: summaryCharacterCount,
+            characterCount: characterCount,
+            showsCursor: showsCursor
+        )
     }
 
     private func visibleLines(
         from lines: [String],
+        lengths: [Int],
+        totalCount: Int,
         characterCount: Int,
         showsCursor: Bool
     ) -> [String] {
-        let totalCount = lines.reduce(0) { $0 + $1.count }
         let targetCount = max(0, min(characterCount, totalCount))
         let shouldShowCursor = showsCursor
         var remaining = targetCount
         var didPlaceCursor = false
 
-        var visibleLines = lines.map { line in
-            guard remaining < line.count else {
-                remaining -= line.count
+        var visibleLines = zip(lines, lengths).map { line, lineLen -> String in
+            guard remaining < lineLen else {
+                remaining -= lineLen
                 return line
             }
 
