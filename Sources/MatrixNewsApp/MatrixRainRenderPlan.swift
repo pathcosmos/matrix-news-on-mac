@@ -5,6 +5,8 @@ import MatrixNewsCore
 #endif
 
 struct MatrixRainRenderPlan: Equatable, Sendable {
+    static let targetFramesPerSecond = 20.0
+
     var size: CGSize
     var framesPerSecond: Double
     var densityScale: Double
@@ -16,33 +18,37 @@ struct MatrixRainRenderPlan: Equatable, Sendable {
         layers.reduce(0) { $0 + $1.estimatedGlyphDraws }
     }
 
+    var estimatedTextDraws: Int {
+        layers.reduce(0) { $0 + $1.estimatedTextDraws }
+    }
+
+    func animationSeconds(rawSeconds: TimeInterval, reduceMotion: Bool) -> TimeInterval {
+        reduceMotion ? 0 : floor(rawSeconds * framesPerSecond) / framesPerSecond
+    }
+
     init(size: CGSize) {
         self.size = size
 
         let pixelArea = max(1, size.width * size.height)
-        let resolvedFramesPerSecond: Double
         let resolvedDensityScale: Double
         let resolvedScanlineSpacing: CGFloat
         let resolvedValueBlendIntensity: Double
 
         if pixelArea >= 7_500_000 {
-            resolvedFramesPerSecond = 24
-            resolvedDensityScale = 0.30
+            resolvedDensityScale = 0.25
             resolvedScanlineSpacing = 8
             resolvedValueBlendIntensity = 0.16
         } else if pixelArea >= 3_000_000 {
-            resolvedFramesPerSecond = 24
-            resolvedDensityScale = 0.44
+            resolvedDensityScale = 0.36
             resolvedScanlineSpacing = 6
             resolvedValueBlendIntensity = 0.14
         } else {
-            resolvedFramesPerSecond = 30
-            resolvedDensityScale = 0.78
+            resolvedDensityScale = 0.64
             resolvedScanlineSpacing = 5
             resolvedValueBlendIntensity = 0.12
         }
 
-        framesPerSecond = resolvedFramesPerSecond
+        framesPerSecond = Self.targetFramesPerSecond
         densityScale = resolvedDensityScale
         scanlineSpacing = resolvedScanlineSpacing
         valueBlendIntensity = resolvedValueBlendIntensity
@@ -56,23 +62,49 @@ struct MatrixRainLayerRenderPlan: Equatable, Sendable {
     var layer: MatrixRainDepthLayer
     var columns: Int
     var rows: Int
+    var effectiveDensityScale: Double
     var columnStep: Int
+    var tailStep: Int
     var visibleTailDistances: [Int]
+    var headGlowOpacity: Double
+    var headGlowRadius: Double
+    var sampledColumns: [MatrixRainColumnRenderPlan]
 
     var estimatedGlyphDraws: Int {
-        let sampledColumns = max(1, Int(ceil(Double(columns + 1) / Double(columnStep))))
-        return sampledColumns * visibleTailDistances.count
+        sampledColumns.count * visibleTailDistances.count
+    }
+
+    var estimatedHeadGlowDraws: Int {
+        headGlowOpacity > 0 ? sampledColumns.count : 0
+    }
+
+    var estimatedTextDraws: Int {
+        estimatedGlyphDraws + estimatedHeadGlowDraws
     }
 
     init(layer: MatrixRainDepthLayer, size: CGSize, densityScale: Double) {
         self.layer = layer
         columns = max(1, Int(size.width / CGFloat(layer.columnWidth)) + 3)
         rows = max(1, Int(size.height / CGFloat(layer.rowHeight)) + layer.tailLength + 5)
-        columnStep = max(1, Int((1 / densityScale).rounded(.toNearestOrAwayFromZero)))
+        effectiveDensityScale = densityScale * layer.densityMultiplier
+        columnStep = max(1, Int((1 / effectiveDensityScale).rounded(.toNearestOrAwayFromZero)))
+        tailStep = layer.tailStep
 
-        let tailStep = 2
         visibleTailDistances = Array(stride(from: 0, through: layer.tailLength, by: tailStep))
+        headGlowOpacity = layer.optimizedHeadGlowOpacity
+        headGlowRadius = layer.optimizedHeadGlowRadius
+        sampledColumns = Array(stride(from: -1, to: columns, by: columnStep)).map { column in
+            MatrixRainColumnRenderPlan(
+                column: column,
+                motion: MatrixRainColumnMotion(column: column, layer: layer)
+            )
+        }
     }
+}
+
+struct MatrixRainColumnRenderPlan: Equatable, Sendable {
+    var column: Int
+    var motion: MatrixRainColumnMotion
 }
 
 struct MatrixRainColumnMotion: Equatable, Sendable {
@@ -186,12 +218,53 @@ private extension Int {
     }
 }
 
+extension MatrixRainDepthLayer {
+    var defaultHeadGlowOpacity: Double {
+        switch self {
+        case .distant: return 0.12
+        case .middle: return 0.26
+        case .near: return 0.34
+        }
+    }
+}
+
 private extension MatrixRainDepthLayer {
     var cacheSeed: Int {
         switch self {
         case .distant: return 11
         case .middle: return 23
         case .near: return 37
+        }
+    }
+
+    var densityMultiplier: Double {
+        switch self {
+        case .distant: return 0.75
+        case .middle: return 0.90
+        case .near: return 1.00
+        }
+    }
+
+    var tailStep: Int {
+        switch self {
+        case .distant, .middle: return 3
+        case .near: return 2
+        }
+    }
+
+    var optimizedHeadGlowOpacity: Double {
+        switch self {
+        case .distant: return 0
+        case .middle: return 0.18
+        case .near: return 0.29
+        }
+    }
+
+    var optimizedHeadGlowRadius: Double {
+        switch self {
+        case .distant: return 0
+        case .middle: return 2.4
+        case .near: return 4.4
         }
     }
 }
