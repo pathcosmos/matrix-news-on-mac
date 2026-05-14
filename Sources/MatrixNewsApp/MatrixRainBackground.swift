@@ -5,6 +5,20 @@ import MatrixNewsCore
 #endif
 
 struct MatrixRainBackground: View {
+    var body: some View {
+        #if os(macOS)
+        if MatrixRainRendererSelector.currentBackend == .metal {
+            MetalMatrixRainBackground()
+        } else {
+            CanvasMatrixRainBackground()
+        }
+        #else
+        CanvasMatrixRainBackground()
+        #endif
+    }
+}
+
+struct CanvasMatrixRainBackground: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     private let glyphComposer = MatrixRainGlyphComposer()
 

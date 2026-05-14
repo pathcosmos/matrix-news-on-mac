@@ -15,6 +15,14 @@ struct MatrixRainPerformanceTests {
         #expect(plan.estimatedTextDraws <= 1_350)
     }
 
+    @Test("Metal instance budget stays within the existing text draw budget at 4K")
+    func metalInstanceBudgetStaysWithinExistingTextDrawBudgetAt4K() {
+        let plan = MatrixRainRenderPlan(size: CGSize(width: 3840, height: 2160))
+
+        #expect(plan.estimatedMetalInstances <= plan.estimatedTextDraws)
+        #expect(plan.estimatedMetalInstances <= 1_350)
+    }
+
     @Test("HD render plan keeps more visual density than 4K")
     func hdRenderPlanKeepsMoreVisualDensityThan4K() {
         let hd = MatrixRainRenderPlan(size: CGSize(width: 1920, height: 1080))
@@ -88,6 +96,160 @@ struct MatrixRainPerformanceTests {
 
         #expect(plan.animationSeconds(rawSeconds: 123.456, reduceMotion: true) == 0)
         #expect(plan.animationSeconds(rawSeconds: 10.049, reduceMotion: false) == 10)
+    }
+
+    @Test("reduce motion selects a paused Metal playback policy")
+    func reduceMotionSelectsPausedMetalPlaybackPolicy() {
+        let reduced = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: true,
+            applicationActive: true,
+            windowVisible: true,
+            performanceFallback: false
+        )
+        let active = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: false,
+            applicationActive: true,
+            windowVisible: true,
+            performanceFallback: false
+        )
+        let fallback = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: false,
+            applicationActive: true,
+            windowVisible: true,
+            performanceFallback: true
+        )
+
+        #expect(reduced.isPaused)
+        #expect(reduced.framesPerSecond == 1)
+        #expect(reduced.animationSeconds(rawSeconds: 123.456) == 0)
+        #expect(active.isPaused == false)
+        #expect(active.framesPerSecond == 60)
+        #expect(fallback.framesPerSecond == 30)
+    }
+
+    @Test("visible inactive Metal playback stays smooth")
+    func visibleInactiveMetalPlaybackStaysSmooth() {
+        let policy = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: false,
+            applicationActive: false,
+            windowVisible: true,
+            performanceFallback: false
+        )
+
+        #expect(policy.framesPerSecond == 60)
+        #expect(policy.isPaused == false)
+        #expect(policy.drawsOnDemand == false)
+    }
+
+    @Test("visible inactive Metal playback uses fallback frame rate when enabled")
+    func visibleInactiveMetalPlaybackUsesFallbackFrameRateWhenEnabled() {
+        let policy = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: false,
+            applicationActive: false,
+            windowVisible: true,
+            performanceFallback: true
+        )
+
+        #expect(policy.framesPerSecond == 30)
+        #expect(policy.isPaused == false)
+        #expect(policy.drawsOnDemand == false)
+    }
+
+    @Test("occluded Metal playback throttles to one frame per second")
+    func occludedMetalPlaybackThrottlesToOneFramePerSecond() {
+        let policy = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: false,
+            applicationActive: true,
+            windowVisible: false,
+            performanceFallback: false
+        )
+
+        #expect(policy.framesPerSecond == 1)
+        #expect(policy.isPaused == false)
+        #expect(policy.drawsOnDemand == false)
+    }
+
+    @Test("Metal animation clock keeps shader time in a precise Float range")
+    func metalAnimationClockKeepsShaderTimeInPreciseFloatRange() {
+        let active = MatrixRainMetalPlaybackPolicy.resolve(
+            reduceMotion: false,
+            applicationActive: true,
+            windowVisible: true,
+            performanceFallback: false
+        )
+        let absoluteStart = 800_000_000.0
+
+        let first = Float(active.animationSeconds(now: absoluteStart + 0.05, start: absoluteStart))
+        let second = Float(active.animationSeconds(now: absoluteStart + 0.10, start: absoluteStart))
+
+        #expect(first < 1)
+        #expect(second < 1)
+        #expect(second > first)
+    }
+
+    @Test("renderer selector falls back to Canvas when Metal is unavailable")
+    func rendererSelectorFallsBackToCanvasWhenMetalIsUnavailable() {
+        #expect(
+            MatrixRainRendererSelector.backend(
+                platformSupportsMetalView: true,
+                metalAvailable: true
+            ) == .metal
+        )
+        #expect(
+            MatrixRainRendererSelector.backend(
+                platformSupportsMetalView: true,
+                metalAvailable: false
+            ) == .canvas
+        )
+        #expect(
+            MatrixRainRendererSelector.backend(
+                platformSupportsMetalView: false,
+                metalAvailable: true
+            ) == .canvas
+        )
+    }
+
+    @Test("Metal glyph atlas layout covers base and value glyphs")
+    func metalGlyphAtlasLayoutCoversBaseAndValueGlyphs() {
+        let composer = MatrixRainGlyphComposer()
+        let layout = MatrixRainGlyphAtlasLayout(glyphComposer: composer)
+        var glyphs = Set(composer.baseGlyphs)
+        glyphs.formUnion(composer.valueFragments.joined())
+
+        for glyph in glyphs {
+            for layer in MatrixRainDepthLayer.allCases {
+                for style in MatrixRainMetalGlyphStyle.allCases {
+                    guard let entry = layout.entry(for: glyph, layer: layer, style: style) else {
+                        Issue.record("Missing atlas entry for \(glyph), \(layer), \(style)")
+                        continue
+                    }
+
+                    #expect(entry.uvRect.minX >= 0)
+                    #expect(entry.uvRect.minY >= 0)
+                    #expect(entry.uvRect.maxX <= 1)
+                    #expect(entry.uvRect.maxY <= 1)
+                    #expect(entry.uvRect.width > 0)
+                    #expect(entry.uvRect.height > 0)
+                    #expect(entry.pointSize.width > 0)
+                    #expect(entry.pointSize.height > 0)
+                }
+            }
+        }
+    }
+
+    @Test("Metal rain uses static GPU instances for a render plan")
+    func metalRainUsesStaticGPUInstancesForRenderPlan() {
+        let composer = MatrixRainGlyphComposer()
+        let renderPlan = MatrixRainRenderPlan(size: CGSize(width: 3840, height: 2160))
+        let staticPlan = MatrixRainMetalStaticInstancePlan(
+            renderPlan: renderPlan,
+            glyphComposer: composer
+        )
+
+        #expect(staticPlan.instances.count == renderPlan.estimatedMetalInstances)
+        #expect(staticPlan.baseGlyphAtlasIndices.count == composer.baseGlyphs.count)
+        #expect(staticPlan.valueGlyphAtlasIndices.count == composer.valueFragments.joined().count)
+        #expect(staticPlan.requiresPerFrameCPUInstanceBuild == false)
     }
 
     @Test("column motion changes y position smoothly between adjacent frames")

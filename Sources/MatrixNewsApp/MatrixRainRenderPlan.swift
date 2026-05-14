@@ -22,6 +22,14 @@ struct MatrixRainRenderPlan: Equatable, Sendable {
         layers.reduce(0) { $0 + $1.estimatedTextDraws }
     }
 
+    var estimatedMetalInstances: Int {
+        layers.reduce(0) { $0 + $1.estimatedMetalInstances }
+    }
+
+    var metalValueBlendThreshold: Int {
+        max(0, min(10, Int((valueBlendIntensity * 64).rounded())))
+    }
+
     func animationSeconds(rawSeconds: TimeInterval, reduceMotion: Bool) -> TimeInterval {
         reduceMotion ? 0 : floor(rawSeconds * framesPerSecond) / framesPerSecond
     }
@@ -79,6 +87,10 @@ struct MatrixRainLayerRenderPlan: Equatable, Sendable {
     }
 
     var estimatedTextDraws: Int {
+        estimatedGlyphDraws + estimatedHeadGlowDraws
+    }
+
+    var estimatedMetalInstances: Int {
         estimatedGlyphDraws + estimatedHeadGlowDraws
     }
 
@@ -146,6 +158,17 @@ struct MatrixRainColumnMotion: Equatable, Sendable {
         CGFloat(sin(seconds * driftRate + driftPhase)) * columnWidth * CGFloat(driftMagnitude)
     }
 
+    func metalParameters() -> MatrixRainColumnMetalMotionParameters {
+        MatrixRainColumnMetalMotionParameters(
+            speedRowsPerSecond: speedRowsPerSecond,
+            phaseRows: phaseRows,
+            gapRows: gapRows,
+            driftPhase: driftPhase,
+            driftRate: driftRate,
+            driftMagnitude: driftMagnitude
+        )
+    }
+
     private func headProgress(seconds: TimeInterval, rows: Int) -> Double {
         let cycleRows = Double(max(1, rows + gapRows))
         return (phaseRows + seconds * speedRowsPerSecond)
@@ -158,6 +181,15 @@ struct MatrixRainColumnMotion: Equatable, Sendable {
         value ^= value >> 13
         return abs(value)
     }
+}
+
+struct MatrixRainColumnMetalMotionParameters: Equatable, Sendable {
+    var speedRowsPerSecond: Double
+    var phaseRows: Double
+    var gapRows: Int
+    var driftPhase: Double
+    var driftRate: Double
+    var driftMagnitude: Double
 }
 
 struct MatrixRainGlyphComposer: Sendable {

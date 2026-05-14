@@ -48,7 +48,7 @@ struct TypewriterNewsView: View {
 
                             VStack(alignment: .leading, spacing: layout.metrics.bodySpacing) {
                                 StableFocusLineStack(
-                                    reservedLines: layout.titleLines,
+                                    reservedLineCount: layout.titleLines.count,
                                     visibleLines: layout.visibleTitleLines(
                                         characterCount: frame.revealedTitleCharacterCount,
                                         showsCursor: showsTitleCursor(frame: frame)
@@ -63,7 +63,7 @@ struct TypewriterNewsView: View {
                                 .shadow(color: .green.opacity(0.64), radius: 10)
 
                                 StableFocusLineStack(
-                                    reservedLines: layout.summaryLines,
+                                    reservedLineCount: layout.summaryLines.count,
                                     visibleLines: layout.visibleSummaryLines(
                                         characterCount: frame.revealedSummaryCharacterCount,
                                         showsCursor: showsSummaryCursor(frame: frame)
@@ -234,7 +234,7 @@ private struct StableFocusPlaybackSignature: Equatable {
 }
 
 private struct StableFocusLineStack: View {
-    var reservedLines: [String]
+    var reservedLineCount: Int
     var visibleLines: [String]
     var width: CGFloat
     var lineHeight: CGFloat
@@ -243,13 +243,8 @@ private struct StableFocusLineStack: View {
     var color: Color
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            lineStack(reservedLines)
-                .opacity(0)
-
-            lineStack(visibleLines)
-        }
-        .frame(width: width, height: lineHeight * CGFloat(reservedLines.count), alignment: .topLeading)
+        lineStack(visibleLines)
+            .frame(width: width, height: lineHeight * CGFloat(reservedLineCount), alignment: .topLeading)
         .clipped()
     }
 
