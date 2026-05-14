@@ -5,23 +5,57 @@ import MatrixNewsCore
 #endif
 
 struct MatrixRainBackground: View {
+    var body: some View {
+        #if os(macOS)
+        if MatrixRainRendererSelector.currentBackend == .metal {
+            MetalMatrixRainBackground()
+        } else {
+            CanvasMatrixRainBackground()
+        }
+        #else
+        CanvasMatrixRainBackground()
+        #endif
+    }
+}
+
+struct CanvasMatrixRainBackground: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var planCache = CanvasRainPlanCache()
     private let glyphComposer = MatrixRainGlyphComposer()
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1.0 / 24.0)) { timeline in
-            Canvas(rendersAsynchronously: true) { context, size in
-                let plan = MatrixRainRenderPlan(size: size)
-                let rawSeconds = timeline.date.timeIntervalSinceReferenceDate
-                let seconds = reduceMotion
-                    ? 0
-                    : floor(rawSeconds * plan.framesPerSecond) / plan.framesPerSecond
-                var textCache = MatrixRainGlyphTextCache(context: context)
+        GeometryReader { proxy in
+            let plan = planCache.plan(for: proxy.size)
 
-                drawBase(in: context, size: size)
-                drawRain(in: context, size: size, seconds: seconds, plan: plan, textCache: &textCache)
-                drawScanlines(in: context, size: size, spacing: plan.scanlineSpacing)
-                drawVignette(in: context, size: size)
+            ZStack {
+                Canvas(rendersAsynchronously: true) { context, _ in
+                    drawBase(in: context, size: plan.size)
+                    drawScanlines(in: context, size: plan.size, spacing: plan.scanlineSpacing)
+                    drawVignette(in: context, size: plan.size)
+                }
+
+                rainAnimation(plan: plan)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func rainAnimation(plan: MatrixRainRenderPlan) -> some View {
+        if reduceMotion {
+            Canvas(rendersAsynchronously: true) { context, _ in
+                var textCache = MatrixRainGlyphTextCache(context: context)
+                drawRain(in: context, size: plan.size, seconds: 0, plan: plan, textCache: &textCache)
+            }
+        } else {
+            TimelineView(.periodic(from: .now, by: 1.0 / MatrixRainRenderPlan.targetFramesPerSecond)) { timeline in
+                Canvas(rendersAsynchronously: true) { context, _ in
+                    let seconds = plan.animationSeconds(
+                        rawSeconds: timeline.date.timeIntervalSinceReferenceDate,
+                        reduceMotion: false
+                    )
+                    var textCache = MatrixRainGlyphTextCache(context: context)
+                    drawRain(in: context, size: plan.size, seconds: seconds, plan: plan, textCache: &textCache)
+                }
             }
         }
     }
@@ -79,8 +113,9 @@ struct MatrixRainBackground: View {
         let columnWidth = CGFloat(layer.columnWidth)
         let rowHeight = CGFloat(layer.rowHeight)
 
-        for column in stride(from: -1, to: layerPlan.columns, by: layerPlan.columnStep) {
-            let motion = MatrixRainColumnMotion(column: column, layer: layer)
+        for columnPlan in layerPlan.sampledColumns {
+            let column = columnPlan.column
+            let motion = columnPlan.motion
             let x = CGFloat(column) * columnWidth
                 + columnWidth * 0.5
                 + motion.xOffset(seconds: seconds, columnWidth: columnWidth)
@@ -120,6 +155,8 @@ struct MatrixRainBackground: View {
                     ),
                     distance: distance,
                     layer: layer,
+                    headGlowOpacity: layerPlan.headGlowOpacity,
+                    headGlowRadius: layerPlan.headGlowRadius,
                     alpha: alpha,
                     orientation: orientation,
                     at: CGPoint(x: x, y: y),
@@ -134,6 +171,8 @@ struct MatrixRainBackground: View {
         _ glyph: String,
         distance: Int,
         layer: MatrixRainDepthLayer,
+        headGlowOpacity: Double,
+        headGlowRadius: Double,
         alpha: Double,
         orientation: MatrixGlyphOrientation,
         at point: CGPoint,
@@ -151,7 +190,7 @@ struct MatrixRainBackground: View {
             isGlow: false
         )
 
-        if isHead {
+        if isHead, headGlowOpacity > 0 {
             let glowText = textCache.resolvedText(
                 glyph: glyph,
                 layer: layer,
@@ -161,10 +200,10 @@ struct MatrixRainBackground: View {
             )
             drawTransformed(
                 glowText,
-                opacity: min(layer.headGlowOpacity, alpha * 0.58),
+                opacity: min(headGlowOpacity, alpha * 0.52),
                 at: point,
                 orientation: orientation,
-                blurRadius: CGFloat(layer.glowRadius),
+                blurRadius: CGFloat(headGlowRadius),
                 in: context
             )
         }
@@ -187,6 +226,8 @@ struct MatrixRainBackground: View {
         blurRadius: CGFloat?,
         in context: GraphicsContext
     ) {
+        guard opacity > 0.001 else { return }
+
         var glyphContext = context
         glyphContext.opacity = opacity
         if let blurRadius {
@@ -288,18 +329,17 @@ private enum MatrixRainGlyphTone: Hashable {
     }
 
     func color(isGlow: Bool) -> Color {
+        let rgb: MatrixRainGlyphRGB
         if isGlow {
-            return Color(red: 0.72, green: 1.0, blue: 0.62)
+            rgb = .headGlow
+        } else {
+            switch self {
+            case .head: rgb = .head
+            case .hotTrail: rgb = .hotTrail
+            case .trail: rgb = .trail
+            }
         }
-
-        switch self {
-        case .head:
-            return Color(red: 0.91, green: 1.0, blue: 0.82)
-        case .hotTrail:
-            return Color(red: 0.58, green: 1.0, blue: 0.48)
-        case .trail:
-            return Color(red: 0.08, green: 0.90, blue: 0.22)
-        }
+        return Color(red: rgb.red, green: rgb.green, blue: rgb.blue)
     }
 }
 
@@ -312,11 +352,17 @@ private extension MatrixRainDepthLayer {
         }
     }
 
-    var headGlowOpacity: Double {
-        switch self {
-        case .distant: return 0.12
-        case .middle: return 0.26
-        case .near: return 0.34
+}
+
+private final class CanvasRainPlanCache: @unchecked Sendable {
+    private var cached: MatrixRainRenderPlan?
+
+    func plan(for size: CGSize) -> MatrixRainRenderPlan {
+        if let cached, cached.size == size {
+            return cached
         }
+        let new = MatrixRainRenderPlan(size: size)
+        cached = new
+        return new
     }
 }

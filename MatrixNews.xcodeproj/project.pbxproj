@@ -28,6 +28,7 @@
 		100000000000000000000017 /* StableFocusTextLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000018 /* StableFocusTextLayout.swift */; };
 		100000000000000000000018 /* MacWindowChromeConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000019 /* MacWindowChromeConfigurator.swift */; };
 		100000000000000000000019 /* MatrixRainRenderPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000001A /* MatrixRainRenderPlan.swift */; };
+		10000000000000000000001C /* MatrixRainMetalBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000001D /* MatrixRainMetalBackground.swift */; };
 		100000000000000000000012 /* latest.sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000012 /* latest.sample.json */; };
 		100000000000000000000013 /* sources.sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000013 /* sources.sample.json */; };
 		10000000000000000000001A /* latest.json in Resources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000001B /* latest.json */; };
@@ -56,6 +57,7 @@
 		200000000000000000000018 /* StableFocusTextLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StableFocusTextLayout.swift; sourceTree = "<group>"; };
 		200000000000000000000019 /* MacWindowChromeConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacWindowChromeConfigurator.swift; sourceTree = "<group>"; };
 		20000000000000000000001A /* MatrixRainRenderPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixRainRenderPlan.swift; sourceTree = "<group>"; };
+		20000000000000000000001D /* MatrixRainMetalBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixRainMetalBackground.swift; sourceTree = "<group>"; };
 		200000000000000000000012 /* latest.sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = latest.sample.json; sourceTree = "<group>"; };
 		200000000000000000000013 /* sources.sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sources.sample.json; sourceTree = "<group>"; };
 		20000000000000000000001B /* latest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = latest.json; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				200000000000000000000018 /* StableFocusTextLayout.swift */,
 				200000000000000000000010 /* MatrixRainBackground.swift */,
 				20000000000000000000001A /* MatrixRainRenderPlan.swift */,
+				20000000000000000000001D /* MatrixRainMetalBackground.swift */,
 				200000000000000000000019 /* MacWindowChromeConfigurator.swift */,
 				300000000000000000000005 /* Resources */,
 			);
@@ -240,6 +243,7 @@
 				100000000000000000000017 /* StableFocusTextLayout.swift in Sources */,
 				100000000000000000000010 /* MatrixRainBackground.swift in Sources */,
 				100000000000000000000019 /* MatrixRainRenderPlan.swift in Sources */,
+				10000000000000000000001C /* MatrixRainMetalBackground.swift in Sources */,
 				100000000000000000000018 /* MacWindowChromeConfigurator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

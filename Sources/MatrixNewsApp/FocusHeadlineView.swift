@@ -15,7 +15,7 @@ struct TypewriterNewsView: View {
     var playbackRevision: Int = 0
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1.0 / 24.0)) { timeline in
+        TimelineView(.periodic(from: .now, by: 1.0 / 20.0)) { timeline in
             GeometryReader { geometry in
                 if let frame = playbackFrame(for: timeline.date, viewportSize: geometry.size) {
                     let marker = PlaybackRefreshMarker(frame: frame)
@@ -48,7 +48,7 @@ struct TypewriterNewsView: View {
 
                             VStack(alignment: .leading, spacing: layout.metrics.bodySpacing) {
                                 StableFocusLineStack(
-                                    reservedLines: layout.titleLines,
+                                    reservedLineCount: layout.titleLines.count,
                                     visibleLines: layout.visibleTitleLines(
                                         characterCount: frame.revealedTitleCharacterCount,
                                         showsCursor: showsTitleCursor(frame: frame)
@@ -59,11 +59,12 @@ struct TypewriterNewsView: View {
                                     weight: .semibold,
                                     color: Color(red: 0.82, green: 1.0, blue: 0.82).opacity(0.98)
                                 )
+                                .compositingGroup()
                                 .shadow(color: .black.opacity(0.92), radius: 14, y: 3)
                                 .shadow(color: .green.opacity(0.64), radius: 10)
 
                                 StableFocusLineStack(
-                                    reservedLines: layout.summaryLines,
+                                    reservedLineCount: layout.summaryLines.count,
                                     visibleLines: layout.visibleSummaryLines(
                                         characterCount: frame.revealedSummaryCharacterCount,
                                         showsCursor: showsSummaryCursor(frame: frame)
@@ -74,6 +75,7 @@ struct TypewriterNewsView: View {
                                     weight: .regular,
                                     color: .white.opacity(0.9)
                                 )
+                                .compositingGroup()
                                 .shadow(color: .black.opacity(0.9), radius: 12, y: 3)
                                 .shadow(color: .green.opacity(0.34), radius: 6)
                             }
@@ -234,7 +236,7 @@ private struct StableFocusPlaybackSignature: Equatable {
 }
 
 private struct StableFocusLineStack: View {
-    var reservedLines: [String]
+    var reservedLineCount: Int
     var visibleLines: [String]
     var width: CGFloat
     var lineHeight: CGFloat
@@ -243,13 +245,8 @@ private struct StableFocusLineStack: View {
     var color: Color
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            lineStack(reservedLines)
-                .opacity(0)
-
-            lineStack(visibleLines)
-        }
-        .frame(width: width, height: lineHeight * CGFloat(reservedLines.count), alignment: .topLeading)
+        lineStack(visibleLines)
+            .frame(width: width, height: lineHeight * CGFloat(reservedLineCount), alignment: .topLeading)
         .clipped()
     }
 

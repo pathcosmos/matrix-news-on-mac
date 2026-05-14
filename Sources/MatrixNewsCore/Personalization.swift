@@ -73,24 +73,25 @@ public struct PersonalizationEngine: Sendable {
         preferences: UserPreferences,
         enabledSourceIDs: Set<String>?
     ) -> [NewsItem] {
-        items
-            .filter { item in
-                !preferences.hiddenItemIDs.contains(item.id)
-                    && !preferences.blockedSourceIDs.contains(item.sourceID)
-                && (enabledSourceIDs == nil || enabledSourceIDs?.contains(item.sourceID) == true)
-            }
-            .sorted { lhs, rhs in
-                let lhsScore = score(lhs, preferences: preferences)
-                let rhsScore = score(rhs, preferences: preferences)
+        let scored: [(item: NewsItem, score: Double)] = items.compactMap { item in
+            guard !preferences.hiddenItemIDs.contains(item.id),
+                  !preferences.blockedSourceIDs.contains(item.sourceID),
+                  enabledSourceIDs == nil || enabledSourceIDs?.contains(item.sourceID) == true
+            else { return nil }
+            return (item, score(item, preferences: preferences))
+        }
 
-                if lhsScore != rhsScore {
-                    return lhsScore > rhsScore
+        return scored
+            .sorted { lhs, rhs in
+                if lhs.score != rhs.score {
+                    return lhs.score > rhs.score
                 }
-                if lhs.publishedAt != rhs.publishedAt {
-                    return lhs.publishedAt > rhs.publishedAt
+                if lhs.item.publishedAt != rhs.item.publishedAt {
+                    return lhs.item.publishedAt > rhs.item.publishedAt
                 }
-                return lhs.title < rhs.title
+                return lhs.item.title < rhs.item.title
             }
+            .map(\.item)
     }
 
     public func score(_ item: NewsItem, preferences: UserPreferences) -> Double {

@@ -1,7 +1,30 @@
 import Foundation
 
 public enum MatrixGlyphSet {
-    public static let koreanMatrix = "가나다라마바사아자차카타파하뉴스속보정치경제사회세계국제문화과학기술스포츠현장단독분석오늘내일한국서울정부국회시장산업외교기후법원검찰"
+    public static let koreanMatrix = "가나다라마바사아자차카타파하뉴스속보정치경제사회세계국제문화과학기술스포츠현장단독분석오늘내일한국서울정부국회시장산업외교기후"
+}
+
+public struct MatrixRainGlyphRGB: Sendable, Hashable {
+    public let red: Double
+    public let green: Double
+    public let blue: Double
+
+    public init(red: Double, green: Double, blue: Double) {
+        self.red = red
+        self.green = green
+        self.blue = blue
+    }
+
+    public static let head = MatrixRainGlyphRGB(red: 0.91, green: 1.0, blue: 0.82)
+    public static let hotTrail = MatrixRainGlyphRGB(red: 0.58, green: 1.0, blue: 0.48)
+    public static let trail = MatrixRainGlyphRGB(red: 0.08, green: 0.90, blue: 0.22)
+    public static let headGlow = MatrixRainGlyphRGB(red: 0.72, green: 1.0, blue: 0.62)
+
+    public static func forDistanceFromHead(_ distance: Int) -> MatrixRainGlyphRGB {
+        if distance == 0 { return .head }
+        if distance <= 3 { return .hotTrail }
+        return .trail
+    }
 }
 
 public enum MatrixGlyphOrientation: CaseIterable, Sendable {

@@ -26,11 +26,8 @@ public struct MBCArticleExcerptExtractor: Sendable {
     }
 
     private static func articleBodyHTML(from html: String) -> String? {
-        let openingDivPattern = #"<div\b([^>]*)>"#
-        let matches = html.matches(
-            pattern: openingDivPattern,
-            options: [.caseInsensitive, .dotMatchesLineSeparators]
-        )
+        let fullRange = NSRange(location: 0, length: (html as NSString).length)
+        let matches = MBCExtractorRegex.openingDiv.matches(in: html, range: fullRange)
 
         for match in matches {
             let attributes = html.substring(match.range(at: 1)).lowercased()
@@ -53,11 +50,7 @@ public struct MBCArticleExcerptExtractor: Sendable {
         guard remainingLength > 0 else { return nil }
 
         let tokenRange = NSRange(location: start, length: remainingLength)
-        let divTokens = html.matches(
-            pattern: #"</?div\b[^>]*>"#,
-            options: [.caseInsensitive, .dotMatchesLineSeparators],
-            range: tokenRange
-        )
+        let divTokens = MBCExtractorRegex.anyDivToken.matches(in: html, range: tokenRange)
         var depth = 1
 
         for token in divTokens {
@@ -85,20 +78,23 @@ public struct MBCArticleExcerptExtractor: Sendable {
             "vod", "video", "player", "share", "sns", "relat", "tag"
         ])
         cleaned = cleaned.replacingHTMLLineBreaks()
-        cleaned = cleaned.replacingOccurrences(
-            of: #"<[^>]+>"#,
-            with: " ",
-            options: [.regularExpression, .caseInsensitive]
+        let range = NSRange(cleaned.startIndex..<cleaned.endIndex, in: cleaned)
+        cleaned = MBCExtractorRegex.anyHTMLTag.stringByReplacingMatches(
+            in: cleaned,
+            options: [],
+            range: range,
+            withTemplate: " "
         )
         return cleaned.decodingHTMLEntities()
     }
 
     private static func isNoiseLine(_ line: String) -> Bool {
         let lowercased = line.lowercased()
-        if line.range(of: #"^\[[^\]]+\]$"#, options: .regularExpression) != nil {
+        let range = NSRange(line.startIndex..<line.endIndex, in: line)
+        if MBCExtractorRegex.bracketLine.firstMatch(in: line, options: [], range: range) != nil {
             return true
         }
-        if line.range(of: #"^◀\s*[^▶]+?\s*▶$"#, options: .regularExpression) != nil {
+        if MBCExtractorRegex.chevronLine.firstMatch(in: line, options: [], range: range) != nil {
             return true
         }
         if lowercased.hasPrefix("https://imnews.imbc.com/") {
@@ -147,6 +143,42 @@ public struct MBCArticleExcerptExtractor: Sendable {
     }
 }
 
+private enum MBCExtractorRegex {
+    static let openingDiv: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"<div\b([^>]*)>"#, options: [.caseInsensitive, .dotMatchesLineSeparators])
+    }()
+    static let anyDivToken: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"</?div\b[^>]*>"#, options: [.caseInsensitive, .dotMatchesLineSeparators])
+    }()
+    static let anyHTMLTag: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"<[^>]+>"#, options: [.caseInsensitive])
+    }()
+    static let whitespaceRun: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"\s+"#)
+    }()
+    static let bracketLine: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"^\[[^\]]+\]$"#)
+    }()
+    static let chevronLine: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"^◀\s*[^▶]+?\s*▶$"#)
+    }()
+    static let brTag: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"<\s*br\s*/?\s*>"#, options: [.caseInsensitive])
+    }()
+    static let closingP: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"</\s*p\s*>"#, options: [.caseInsensitive])
+    }()
+    static let closingDiv: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"</\s*div\s*>"#, options: [.caseInsensitive])
+    }()
+    static let hexEntity: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"&#x([0-9a-fA-F]+);"#)
+    }()
+    static let decimalEntity: NSRegularExpression = {
+        try! NSRegularExpression(pattern: #"&#([0-9]+);"#)
+    }()
+}
+
 private extension String {
     func matches(
         pattern: String,
@@ -166,8 +198,14 @@ private extension String {
     }
 
     var collapsedWhitespace: String {
-        replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let range = NSRange(startIndex..<endIndex, in: self)
+        let collapsed = MBCExtractorRegex.whitespaceRun.stringByReplacingMatches(
+            in: self,
+            options: [],
+            range: range,
+            withTemplate: " "
+        )
+        return collapsed.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     func removingHTMLBlocks(named names: [String]) -> String {
@@ -193,21 +231,17 @@ private extension String {
     }
 
     func replacingHTMLLineBreaks() -> String {
-        replacingOccurrences(
-            of: #"(?i)<\s*br\s*/?\s*>"#,
-            with: "\n",
-            options: .regularExpression
-        )
-        .replacingOccurrences(
-            of: #"(?i)</\s*p\s*>"#,
-            with: "\n",
-            options: .regularExpression
-        )
-        .replacingOccurrences(
-            of: #"(?i)</\s*div\s*>"#,
-            with: "\n",
-            options: .regularExpression
-        )
+        var result = self
+        for regex in [MBCExtractorRegex.brTag, MBCExtractorRegex.closingP, MBCExtractorRegex.closingDiv] {
+            let range = NSRange(result.startIndex..<result.endIndex, in: result)
+            result = regex.stringByReplacingMatches(
+                in: result,
+                options: [],
+                range: range,
+                withTemplate: "\n"
+            )
+        }
+        return result
     }
 
     func decodingHTMLEntities() -> String {
@@ -220,15 +254,14 @@ private extension String {
             .replacingOccurrences(of: "&#39;", with: "'")
             .replacingOccurrences(of: "&apos;", with: "'")
 
-        result = result.replacingNumericHTMLEntities(pattern: #"&#x([0-9a-fA-F]+);"#, radix: 16)
-        result = result.replacingNumericHTMLEntities(pattern: #"&#([0-9]+);"#, radix: 10)
+        result = result.replacingNumericHTMLEntities(regex: MBCExtractorRegex.hexEntity, radix: 16)
+        result = result.replacingNumericHTMLEntities(regex: MBCExtractorRegex.decimalEntity, radix: 10)
         return result
     }
 
-    private func replacingNumericHTMLEntities(pattern: String, radix: Int) -> String {
+    private func replacingNumericHTMLEntities(regex: NSRegularExpression, radix: Int) -> String {
         let nsString = self as NSString
-        guard let expression = try? NSRegularExpression(pattern: pattern) else { return self }
-        let matches = expression.matches(
+        let matches = regex.matches(
             in: self,
             range: NSRange(location: 0, length: nsString.length)
         )
