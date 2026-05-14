@@ -10,11 +10,14 @@ const MAX_ITEMS = 50;
 const GLYPHS =
   '가나다라마바사아자차카타파하뉴스속보정치경제사회세계국제문화과학기술스포츠현장단독분석오늘내일한국서울정부국회시장산업외교기후';
 
-// Matches MatrixRainDepthLayer in MatrixGlyphSet.swift.
+// Matches MatrixRainDepthLayer + MatrixRainLayerRenderPlan in the SwiftUI app.
+// tailStep: draw every Nth glyph in the tail so the stream reads as a chain of
+// drops rather than a packed grid. headGlow: extra blurred pass under the head.
+// seedKey: stable per-layer seed so motion parameters differ between layers.
 const LAYERS = [
-  { columnWidth: 31, rowHeight: 29, fontSize: 12, speed: 0.58, tailLength: 13, baseOpacity: 0.20, headOpacity: 0.52 },
-  { columnWidth: 24, rowHeight: 25, fontSize: 15, speed: 0.92, tailLength: 18, baseOpacity: 0.34, headOpacity: 0.78 },
-  { columnWidth: 18, rowHeight: 22, fontSize: 19, speed: 1.34, tailLength: 24, baseOpacity: 0.50, headOpacity: 0.88 },
+  { columnWidth: 31, rowHeight: 29, fontSize: 12, speed: 0.58, tailLength: 13, tailStep: 3, baseOpacity: 0.20, headOpacity: 0.52, headGlowOpacity: 0,    headGlowRadius: 0,   seedKey: 11 },
+  { columnWidth: 24, rowHeight: 25, fontSize: 15, speed: 0.92, tailLength: 18, tailStep: 3, baseOpacity: 0.34, headOpacity: 0.78, headGlowOpacity: 0.18, headGlowRadius: 2.4, seedKey: 23 },
+  { columnWidth: 18, rowHeight: 22, fontSize: 19, speed: 1.34, tailLength: 24, tailStep: 2, baseOpacity: 0.50, headOpacity: 0.88, headGlowOpacity: 0.29, headGlowRadius: 4.4, seedKey: 37 },
 ];
 
 const FONT_STACK =
@@ -79,12 +82,22 @@ function hash2(a, b) {
 }
 
 function rebuildColumns() {
-  columnsByLayer = LAYERS.map((layer, li) => {
-    const cols = Math.ceil(cssW / layer.columnWidth) + 1;
-    return Array.from({ length: cols }, (_, c) => ({
-      speedMul: 0.55 + (hash2(c + li * 173, 271) % 10000) / 10000 * 1.05,
-      rowOffset: (hash2(c + li * 521, 9931) % 10000) / 10000,
-    }));
+  // Mirrors MatrixRainColumnMotion(column:layer:) in the SwiftUI app:
+  // each column gets its own speed multiplier, phase offset, cycle gap, and
+  // gentle horizontal drift so the rain looks layered instead of synchronized.
+  columnsByLayer = LAYERS.map((layer) => {
+    const cols = Math.ceil(cssW / layer.columnWidth) + 3;
+    return Array.from({ length: cols }, (_, c) => {
+      const seed = hash2(c, layer.seedKey);
+      return {
+        speedRowsPerSecond: layer.speed * (5.8 + (seed % 23) / 15.0),
+        phaseRows: (seed % 10000) / 10000 * 80,
+        gapRows: 5 + (seed % Math.max(6, layer.tailLength)),
+        driftPhase: ((seed >>> 3) % 6283) / 1000,
+        driftRate: 0.08 + ((seed >>> 6) % 19) / 220,
+        driftMagnitude: 0.08 + ((seed >>> 9) % 17) / 210,
+      };
+    });
   });
 }
 
@@ -112,40 +125,69 @@ function drawRain(timeSec) {
 }
 
 function drawLayer(layer, cols, timeSec) {
-  const rows = Math.ceil(cssH / layer.rowHeight) + 4;
-  const totalRows = rows + layer.tailLength;
+  const baseRows = Math.ceil(cssH / layer.rowHeight) + layer.tailLength + 5;
 
-  // Pre-compute per-column head row, so we iterate distance-major
-  // (batches fillStyle/font swaps for performance).
-  const headFloats = new Float32Array(cols.length);
+  // Per-column head progress. SwiftUI uses positive remainder over (rows + gapRows)
+  // so each stream has an empty pause between cycles.
+  const headProgress = new Float64Array(cols.length);
+  const cycleRows = new Int32Array(cols.length);
+  const xOffsets = new Float64Array(cols.length);
   for (let c = 0; c < cols.length; c++) {
     const col = cols[c];
-    let h = timeSec * layer.speed * col.speedMul + col.rowOffset * totalRows;
-    h = ((h % totalRows) + totalRows) % totalRows;
-    headFloats[c] = h - layer.tailLength; // start above the screen
+    const cycle = baseRows + col.gapRows;
+    cycleRows[c] = cycle;
+    let p = (col.phaseRows + timeSec * col.speedRowsPerSecond) % cycle;
+    if (p < 0) p += cycle;
+    headProgress[c] = p;
+    xOffsets[c] = Math.sin(timeSec * col.driftRate + col.driftPhase) * col.driftMagnitude * layer.columnWidth;
   }
 
-  for (let d = 0; d < layer.tailLength; d++) {
+  // Sparse tail distances: 0 (head), then every tailStep up to tailLength.
+  const distances = [];
+  for (let d = 0; d <= layer.tailLength; d += layer.tailStep) distances.push(d);
+
+  // Tail pass (distance-major to batch fillStyle/font swaps).
+  for (const d of distances) {
     const alpha = opacityFor(d, layer);
     if (alpha < 0.027) continue;
-
     const isHead = d === 0;
     const fontSize = isHead ? layer.fontSize * 1.08 : layer.fontSize;
     ctx.font = `${isHead ? 700 : 400} ${fontSize}px ${FONT_STACK}`;
-
     const [r, g, b] = colorFor(d);
     ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 
     for (let c = 0; c < cols.length; c++) {
-      const rowFloat = headFloats[c] - d;
+      const progress = headProgress[c];
+      // SwiftUI yPosition: (progress + (distance - tailLength)) * rowHeight.
+      const rowFloat = progress + d - layer.tailLength;
       const y = rowFloat * layer.rowHeight + layer.rowHeight * 0.5;
-      if (y < -layer.rowHeight || y > cssH + layer.rowHeight) continue;
+      if (y < -layer.rowHeight * 2 || y > cssH + layer.rowHeight * 2) continue;
 
-      const x = c * layer.columnWidth + layer.columnWidth * 0.5;
-      const row = Math.floor(rowFloat);
-      const glyph = pickGlyph(c, row, timeSec);
-      ctx.fillText(glyph, x, y);
+      const x = c * layer.columnWidth + layer.columnWidth * 0.5 + xOffsets[c];
+      const cycle = cycleRows[c];
+      const rowIdx = ((Math.floor(progress) + d) % cycle + cycle) % cycle;
+      ctx.fillText(pickGlyph(c, rowIdx, timeSec), x, y);
     }
+  }
+
+  // Head glow pass — draw a blurred halo under each head glyph.
+  if (layer.headGlowOpacity > 0) {
+    ctx.font = `700 ${layer.fontSize * 1.08}px ${FONT_STACK}`;
+    ctx.fillStyle = `rgba(184, 255, 158, ${layer.headGlowOpacity})`;
+    ctx.shadowColor = `rgba(184, 255, 158, ${Math.min(0.85, layer.headGlowOpacity * 2.2)})`;
+    ctx.shadowBlur = layer.headGlowRadius * 2.4;
+    for (let c = 0; c < cols.length; c++) {
+      const progress = headProgress[c];
+      const rowFloat = progress - layer.tailLength;
+      const y = rowFloat * layer.rowHeight + layer.rowHeight * 0.5;
+      if (y < -layer.rowHeight * 2 || y > cssH + layer.rowHeight * 2) continue;
+      const x = c * layer.columnWidth + layer.columnWidth * 0.5 + xOffsets[c];
+      const cycle = cycleRows[c];
+      const rowIdx = (Math.floor(progress) % cycle + cycle) % cycle;
+      ctx.fillText(pickGlyph(c, rowIdx, timeSec), x, y);
+    }
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'rgba(0,0,0,0)';
   }
 }
 
@@ -163,11 +205,12 @@ function colorFor(distance) {
 }
 
 function pickGlyph(col, row, timeSec) {
-  // Glyph at (col, row) is mostly stable so rain reads as a falling stream rather than
-  // a flickering grid. Each cell does a slow drift swap every ~6s, staggered per cell.
-  const slowTick = Math.floor(timeSec / 6 + ((col * 13 + row * 7) & 0xff) / 256);
-  const idx = hash2(col * 131 + 9001, row * 47 + slowTick * 911) % GLYPHS.length;
-  return GLYPHS[idx];
+  // Matches MatrixRainGlyphComposer: glyph is hashed from (column, row, tick),
+  // where tick advances twice per second so glyphs flicker even within a row.
+  const tick = Math.floor(timeSec * 2);
+  let h = (col * 73856093) ^ (row * 19349663) ^ (tick * 83492791);
+  h ^= h >>> 13;
+  return GLYPHS[Math.abs(h | 0) % GLYPHS.length];
 }
 
 function drawVignette() {
