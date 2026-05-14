@@ -166,7 +166,7 @@ function drawLayer(layer, cols, timeSec) {
       const x = c * layer.columnWidth + layer.columnWidth * 0.5 + xOffsets[c];
       const cycle = cycleRows[c];
       const rowIdx = ((Math.floor(progress) + d) % cycle + cycle) % cycle;
-      ctx.fillText(pickGlyph(c, rowIdx, timeSec), x, y);
+      drawGlyph(pickGlyph(c, rowIdx, timeSec), x, y, orientationFor(c, rowIdx));
     }
   }
 
@@ -184,7 +184,7 @@ function drawLayer(layer, cols, timeSec) {
       const x = c * layer.columnWidth + layer.columnWidth * 0.5 + xOffsets[c];
       const cycle = cycleRows[c];
       const rowIdx = (Math.floor(progress) % cycle + cycle) % cycle;
-      ctx.fillText(pickGlyph(c, rowIdx, timeSec), x, y);
+      drawGlyph(pickGlyph(c, rowIdx, timeSec), x, y, orientationFor(c, rowIdx));
     }
     ctx.shadowBlur = 0;
     ctx.shadowColor = 'rgba(0,0,0,0)';
@@ -211,6 +211,30 @@ function pickGlyph(col, row, timeSec) {
   let h = (col * 73856093) ^ (row * 19349663) ^ (tick * 83492791);
   h ^= h >>> 13;
   return GLYPHS[Math.abs(h | 0) % GLYPHS.length];
+}
+
+// Matches MatrixGlyphOrientation.orientation(column:row:): ~0.1% of cells
+// render upside down, ~3.4% horizontally mirrored, the rest normal.
+function orientationFor(col, row) {
+  let v = (col * 73856093) ^ (row * 19349663);
+  v ^= v >>> 13;
+  v = Math.abs(v | 0);
+  if (v % 997 === 0) return 2; // upside down
+  if (v % 29 === 0) return 1;  // mirrored
+  return 0;
+}
+
+function drawGlyph(glyph, x, y, orient) {
+  if (orient === 0) {
+    ctx.fillText(glyph, x, y);
+    return;
+  }
+  ctx.save();
+  ctx.translate(x, y);
+  if (orient === 1) ctx.scale(-1, 1);
+  else ctx.scale(1, -1);
+  ctx.fillText(glyph, 0, 0);
+  ctx.restore();
 }
 
 function drawVignette() {
