@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2026-06-03T17:31:22Z",
+  "generatedAt" : "2026-06-03T18:56:21Z",
   "items" : [
     {
       "category" : "society",
@@ -23,20 +23,20 @@
     },
     {
       "category" : "politics",
-      "id" : "mbc-politics-6827545",
+      "id" : "mbc-politics-6827567",
       "keywords" : [
-        "데이터m",
-        "격전지",
-        "경기",
-        "평택",
-        "득표율",
-        "변화는"
+        "터치m",
+        "조국혁신당",
+        "개혁신당",
+        "진보당",
+        "시군구청장",
+        "성적은"
       ],
       "publishedAt" : "2026-06-04T00:00:00Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
-      "title" : "[데이터M] 격전지 '경기 평택 을'‥득표율 변화는?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827545_36911.html"
+      "title" : "[터치M] 조국혁신당·개혁신당·진보당, 시군구청장 성적은?",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827567_36911.html"
     },
     {
       "category" : "international",
@@ -75,6 +75,337 @@
     },
     {
       "category" : "politics",
+      "id" : "mbc-politics-6827566",
+      "keywords" : [
+        "데이터m",
+        "서울시장",
+        "스포일러",
+        "이번에도",
+        "정원오",
+        "후보",
+        "앞서"
+      ],
+      "publishedAt" : "2026-06-03T23:59:59Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[데이터M] 서울시장 스포일러, 이번에도?‥정원오 후보 앞서",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827566_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827565",
+      "keywords" : [
+        "서울교육감",
+        "정근식",
+        "당선",
+        "확실",
+        "경기",
+        "안민석",
+        "인천",
+        "도성훈"
+      ],
+      "publishedAt" : "2026-06-03T23:59:58Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "서울교육감 정근식 '당선 확실'‥경기 안민석, 인천 도성훈",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827565_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827564",
+      "keywords" : [
+        "터치m",
+        "정원오",
+        "오세훈",
+        "격차",
+        "p로",
+        "좁혀져",
+        "성동도",
+        "접전"
+      ],
+      "publishedAt" : "2026-06-03T23:59:57Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[터치M] 정원오-오세훈 격차 6.9%p로 좁혀져‥성동도 접전",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827564_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827561",
+      "keywords" : [
+        "데이터m",
+        "역전",
+        "재역전",
+        "경남",
+        "당일투표함",
+        "열리면",
+        "박완수",
+        "유리"
+      ],
+      "publishedAt" : "2026-06-03T23:59:56Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[데이터M] '역전, 재역전' 경남‥당일투표함 다 열리면 박완수 유리?",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827561_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827559",
+      "keywords" : [
+        "터치m",
+        "경남",
+        "김경수",
+        "강세",
+        "김해",
+        "개표",
+        "남아",
+        "서울"
+      ],
+      "publishedAt" : "2026-06-03T23:59:55Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[터치M] 경남, '김경수 강세' 김해 개표 남아‥서울 '강남3구' 상황은",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827559_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827560",
+      "keywords" : [
+        "전재수",
+        "입장",
+        "발표",
+        "변화",
+        "선택한",
+        "부산시민",
+        "무겁게",
+        "받들어"
+      ],
+      "publishedAt" : "2026-06-03T23:59:54Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "전재수 입장 발표 \"변화 선택한 부산시민 뜻, 무겁게 받들어 일할 것\"",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827560_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827557",
+      "keywords" : [
+        "대구",
+        "추경호",
+        "당선",
+        "유력",
+        "따끔한",
+        "질책",
+        "가슴에",
+        "담고"
+      ],
+      "publishedAt" : "2026-06-03T23:59:53Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "대구 추경호 '당선 유력'‥\"따끔한 질책 가슴에 담고 최선 다할 것\"",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827557_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827558",
+      "keywords" : [
+        "박형준",
+        "입장",
+        "발표",
+        "부산",
+        "시민께",
+        "감사",
+        "전재수",
+        "후보에"
+      ],
+      "publishedAt" : "2026-06-03T23:59:52Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "박형준 입장 발표 \"부산 시민께 감사‥전재수 후보에 축하\"",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827558_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827556",
+      "keywords" : [
+        "선택2026",
+        "당선",
+        "확실",
+        "후보들"
+      ],
+      "publishedAt" : "2026-06-03T23:59:51Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[선택2026] '당선 확실'한 후보들",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827556_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827554",
+      "keywords" : [
+        "데이터m",
+        "서울",
+        "대구",
+        "부산",
+        "민심",
+        "균형추",
+        "어디로"
+      ],
+      "publishedAt" : "2026-06-03T23:59:50Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[데이터M] 서울·대구·부산, 민심 균형추 어디로?",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827554_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827555",
+      "keywords" : [
+        "조국",
+        "입장",
+        "발표",
+        "평택서",
+        "국힘",
+        "제로",
+        "명령",
+        "완수"
+      ],
+      "publishedAt" : "2026-06-03T23:59:49Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "조국 입장 발표 \"평택서 '국힘 제로' 명령 완수 못 해‥모두 저의 책임\"",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827555_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827553",
+      "keywords" : [
+        "터치m",
+        "4년",
+        "사이",
+        "달라진",
+        "민심",
+        "현재",
+        "판세는"
+      ],
+      "publishedAt" : "2026-06-03T23:59:48Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[터치M] 4년 사이 달라진 민심‥현재 판세는?",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827553_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827551",
+      "keywords" : [
+        "인천",
+        "계양을",
+        "당선",
+        "확실",
+        "김남준",
+        "민주당",
+        "후보",
+        "소감"
+      ],
+      "publishedAt" : "2026-06-03T23:59:47Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "인천 계양을 '당선 확실' 김남준 민주당 후보 소감",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827551_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827550",
+      "keywords" : [
+        "대전시장",
+        "당선",
+        "확실",
+        "허태정",
+        "후보",
+        "입장",
+        "발표"
+      ],
+      "publishedAt" : "2026-06-03T23:59:46Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "대전시장 '당선 확실' 허태정 후보 입장 발표",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827550_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827549",
+      "keywords" : [
+        "대구",
+        "김부겸",
+        "낙선",
+        "인사",
+        "선거",
+        "결과에",
+        "겸허히",
+        "승복"
+      ],
+      "publishedAt" : "2026-06-03T23:59:45Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "대구 김부겸, 낙선 인사 \"선거 결과에 겸허히 승복\"",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827549_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827548",
+      "keywords" : [
+        "경기",
+        "평택",
+        "김용남",
+        "민주당",
+        "후보",
+        "입장",
+        "발표"
+      ],
+      "publishedAt" : "2026-06-03T23:59:44Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "경기 평택 을 김용남 민주당 후보 입장 발표",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827548_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827547",
+      "keywords" : [
+        "터치m",
+        "강원",
+        "우상호",
+        "김진태",
+        "초접전",
+        "부산",
+        "현재",
+        "상황은"
+      ],
+      "publishedAt" : "2026-06-03T23:59:43Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[터치M] 강원 우상호·김진태 '초접전'·부산 현재 상황은?",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827547_36911.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-politics-6827545",
+      "keywords" : [
+        "데이터m",
+        "격전지",
+        "경기",
+        "평택",
+        "득표율",
+        "변화는"
+      ],
+      "publishedAt" : "2026-06-03T23:59:42Z",
+      "sourceID" : "mbc-politics",
+      "sourceName" : "MBC",
+      "title" : "[데이터M] 격전지 '경기 평택 을'‥득표율 변화는?",
+      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827545_36911.html"
+    },
+    {
+      "category" : "politics",
       "id" : "mbc-politics-6827544",
       "keywords" : [
         "부산",
@@ -85,7 +416,7 @@
         "지지자께",
         "감사"
       ],
-      "publishedAt" : "2026-06-03T23:59:59Z",
+      "publishedAt" : "2026-06-03T23:59:41Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "부산 북구갑 하정우 \"낙선 받아들여‥지지자께 감사\"",
@@ -104,10 +435,10 @@
         "시민들께",
         "감사"
       ],
-      "publishedAt" : "2026-06-03T23:59:58Z",
+      "publishedAt" : "2026-06-03T23:59:40Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
-      "title" : "[속보] 부산 북구갑 한동훈 당선 \"역사적 승리, 시민들께 감사\"",
+      "title" : "부산 북구갑 한동훈 당선 \"역사적 승리, 시민들께 감사\"",
       "url" : "https://imnews.imbc.com/news/2026/politics/article/6827543_36911.html"
     },
     {
@@ -123,7 +454,7 @@
         "승패",
         "갈랐나"
       ],
-      "publishedAt" : "2026-06-03T23:59:57Z",
+      "publishedAt" : "2026-06-03T23:59:39Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "[터치M] 부산 북구갑 한동훈 당선‥무엇이 승패 갈랐나?",
@@ -140,7 +471,7 @@
         "시각",
         "격전지"
       ],
-      "publishedAt" : "2026-06-03T23:59:56Z",
+      "publishedAt" : "2026-06-03T23:59:38Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "[데이터M] '대구' 역전의 순간‥이 시각 격전지",
@@ -159,26 +490,11 @@
         "김진태",
         "초접전"
       ],
-      "publishedAt" : "2026-06-03T23:59:55Z",
+      "publishedAt" : "2026-06-03T23:59:37Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "[터치M] 대구 추경호 역전‥강원 우상호·김진태 '초접전'",
       "url" : "https://imnews.imbc.com/news/2026/politics/article/6827536_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827535",
-      "keywords" : [
-        "선택2026",
-        "당선",
-        "확실",
-        "후보들"
-      ],
-      "publishedAt" : "2026-06-03T23:59:54Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[선택2026] '당선 확실'한 후보들",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827535_36911.html"
     },
     {
       "category" : "politics",
@@ -192,7 +508,7 @@
         "효능감",
         "인천으로"
       ],
-      "publishedAt" : "2026-06-03T23:59:53Z",
+      "publishedAt" : "2026-06-03T23:59:35Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "인천시장 '당선 확실' 박찬대 \"중앙정부 효능감 인천으로\"",
@@ -211,7 +527,7 @@
         "최후",
         "승자는"
       ],
-      "publishedAt" : "2026-06-03T23:59:52Z",
+      "publishedAt" : "2026-06-03T23:59:34Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "summary" : "Q. '초접전' 대구, 최후 승자는? Q. 사전투표 vs 당일투표‥대구 남은 표심은? Q. 유의동 역전‥경기 평택 을 최후 승자는? Q. 경기 평택 을 단일화 무산‥표심 영향? Q. 하정우 vs 한동훈, 승자는? Q. 부산 북구 갑, 남은 표심 향방은? Q. 이번 선거 의미?",
@@ -229,7 +545,7 @@
         "추경호",
         "순간들"
       ],
-      "publishedAt" : "2026-06-03T23:59:51Z",
+      "publishedAt" : "2026-06-03T23:59:33Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "[데이터M] 대구시장 맞대결‥김부겸·추경호 '순간들'",
@@ -248,7 +564,7 @@
         "부산",
         "북구갑"
       ],
-      "publishedAt" : "2026-06-03T23:59:50Z",
+      "publishedAt" : "2026-06-03T23:59:32Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "summary" : "6·3 지방선거와 함께 치러진 국회의원 재·보궐선거 최종 투표율이 60.9%를 기록한 것으로 잠정 집계됐습니다. 중앙선거관리위원회는 본투표, 사전투표, 거소투표를 종합한 결과 국회의원 재보선 잠정투표율이 60.9%를 기록했다고 밝혔습니다. 총 14개 선거구에서 치러진 이번 재·보궐선거는 유권자 총 226만여 명 가운데 138만여 명이 투표에 참여한 것으로 파악됐습니다.",
@@ -265,7 +581,7 @@
         "균형추",
         "어디로"
       ],
-      "publishedAt" : "2026-06-03T23:59:49Z",
+      "publishedAt" : "2026-06-03T23:59:31Z",
       "sourceID" : "mbc-politics",
       "sourceName" : "MBC",
       "title" : "[데이터M] '대구' 민심 균형추 어디로?",
@@ -273,81 +589,7 @@
     },
     {
       "category" : "politics",
-      "id" : "mbc-politics-6827523",
-      "keywords" : [
-        "선택2026",
-        "이름을",
-        "보여줘",
-        "현재",
-        "시도지사",
-        "순위는"
-      ],
-      "publishedAt" : "2026-06-03T23:59:48Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[선택2026] '이름을 보여줘' 현재 시도지사 순위는?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827523_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827522",
-      "keywords" : [
-        "터치m",
-        "초접전",
-        "대구",
-        "평택을",
-        "유의동",
-        "역전",
-        "현재",
-        "개표"
-      ],
-      "publishedAt" : "2026-06-03T23:59:47Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[터치M] 초접전 '대구'·'평택을' 유의동 역전‥현재 개표 상황은?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827522_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827520",
-      "keywords" : [
-        "데이터m",
-        "남은",
-        "표는",
-        "추경호가",
-        "유리",
-        "대구",
-        "권역별",
-        "개표"
-      ],
-      "publishedAt" : "2026-06-03T23:59:46Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[데이터M] 남은 표는 추경호가 유리?‥대구 권역별 개표 상황",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827520_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827518",
-      "keywords" : [
-        "당선",
-        "확실",
-        "인천",
-        "연수",
-        "송영길",
-        "민주당",
-        "후보",
-        "입장"
-      ],
-      "publishedAt" : "2026-06-03T23:59:45Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "'당선 확실' 인천 연수 갑 송영길 민주당 후보 입장 발표",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827518_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827521",
+      "id" : "mbc-headline-6827521",
       "keywords" : [
         "투표함",
         "반출",
@@ -358,8 +600,8 @@
         "투표소에",
         "경찰"
       ],
-      "publishedAt" : "2026-06-03T23:59:44Z",
-      "sourceID" : "mbc-politics",
+      "publishedAt" : "2026-06-03T18:56:17Z",
+      "sourceID" : "mbc-headline",
       "sourceName" : "MBC",
       "summary" : "'투표함 반출 저지 대치' 서울 잠실7동 투표소에 경찰 수십 명 투입 ▶MBC뉴스를 네이버 메인에서 확인하세요. ▶",
       "title" : "[속보] '투표함 반출 저지 대치' 서울 잠실7동 투표소에 경찰 수십 명 투입",
@@ -367,7 +609,7 @@
     },
     {
       "category" : "politics",
-      "id" : "mbc-politics-6827515",
+      "id" : "mbc-headline-6827515",
       "keywords" : [
         "국민의힘",
         "선관위",
@@ -377,198 +619,12 @@
         "선거무효소송",
         "준비"
       ],
-      "publishedAt" : "2026-06-03T23:59:42Z",
-      "sourceID" : "mbc-politics",
+      "publishedAt" : "2026-06-03T18:56:16Z",
+      "sourceID" : "mbc-headline",
       "sourceName" : "MBC",
-      "summary" : "국민의힘은 6·3 지방선거 당일인 어제 투표용지 부족 상태가 발생하자 심야에 중앙선거관리위원회를 항의 방문했습니다. 국민의힘 장동혁 대표 등 지도부는 어젯밤(3일) 10시 반쯤 경기도 과천시의 중앙선관위를 찾아 허철훈 사무총장을 만나 \"투표용지 부족은 독일, 미국 판례에 비춰봐도 당연히 선거 무효 사유\"라고 말했습니다. 장 대표는 \"개표방송 이후 투표한 분들은 이미 개표방송에 영향을 받았을 것\"이라며 \"이미 선거 자체가 심각하게 오염됐기 때문에 재선거를 해야 하는 사안\"이라고 강조했습니다.",
+      "summary" : "국민의힘은 6·3 지방선거 당일인 어제 투표용지 부족 상태가 발생하자 심야에 중앙선거관리위원회를 항의 방문했습니다. 국민의힘 장동혁 대표 등 지도부는 어젯밤(3일) 10시 반쯤 경기도 과천시의 중앙선관위를 찾아 허철훈 사무총장을 만나 \"투표용지 부족은 독일, 미국 판례...",
       "title" : "국민의힘, 선관위 심야 항의 방문‥\"선거무효소송 준비 중\"",
       "url" : "https://imnews.imbc.com/news/2026/politics/article/6827515_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827514",
-      "keywords" : [
-        "데이터m",
-        "부산",
-        "울산",
-        "경남",
-        "민심은"
-      ],
-      "publishedAt" : "2026-06-03T23:59:41Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[데이터M] 부산·울산·경남 민심은?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827514_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827513",
-      "keywords" : [
-        "당선",
-        "확실",
-        "경기지사",
-        "민주당",
-        "추미애",
-        "후보",
-        "입장",
-        "발표"
-      ],
-      "publishedAt" : "2026-06-03T23:59:40Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "'당선 확실' 경기지사 민주당 추미애 후보 입장 발표",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827513_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827512",
-      "keywords" : [
-        "터치m",
-        "2018",
-        "vs",
-        "2022",
-        "경남의",
-        "표심은"
-      ],
-      "publishedAt" : "2026-06-03T23:59:39Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[터치M] 2018 vs 2022, 경남의 표심은?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827512_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827510",
-      "keywords" : [
-        "선택2026",
-        "다시",
-        "보는",
-        "코리아",
-        "우리의",
-        "1년",
-        "현재",
-        "전국"
-      ],
-      "publishedAt" : "2026-06-03T23:59:38Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "[선택2026] '다시 보는 코리아, 우리의 1년' 현재 전국 개표율",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827510_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827509",
-      "keywords" : [
-        "당선",
-        "유력",
-        "울산시장",
-        "민주당",
-        "김상욱",
-        "후보",
-        "입장",
-        "발표"
-      ],
-      "publishedAt" : "2026-06-03T23:59:37Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "title" : "'당선 유력' 울산시장 민주당 김상욱 후보 입장 발표",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827509_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827507",
-      "keywords" : [
-        "적중2026",
-        "부울경",
-        "접전",
-        "예측",
-        "현재",
-        "상황은"
-      ],
-      "publishedAt" : "2026-06-03T23:59:36Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "summary" : "부산시장 예측 [방송3사 출구조사] 전재수 53.0%, 박형준 45.4% [적중2026 당선확률 예측] 전재수 88.0%, 박형준 12.0% 경남지사 예측 [방송3사 출구조사] 김경수 47.5%, 박완수 52.5% [적중2026 당선확률 예측] 김경수 86.6%, 박완수 11.7% 울산시장 예측 [방송3사 출구조사] 김상욱 55.2%, 김두겸 39.7% [적중2026 당선확률 예측] 김상욱 97.1%, 김두겸 2.9% ※ 자세한 내용은 영상을 확인해주시기 바랍니다.",
-      "title" : "[적중2026] '부울경' 접전 예측‥현재 상황은?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827507_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-politics-6827506",
-      "keywords" : [
-        "토론m",
-        "하정우",
-        "한동훈",
-        "본투표",
-        "열리면",
-        "크로스"
-      ],
-      "publishedAt" : "2026-06-03T23:59:35Z",
-      "sourceID" : "mbc-politics",
-      "sourceName" : "MBC",
-      "summary" : "Q. 시도지사, 전국 판세는? Q. 부산 북구 갑, 남은 표심 향방은? Q. 하정우·한동훈, 승자는? Q. '보수 심장' 대구, 이번엔 다를까?",
-      "title" : "[토론M] 하정우·한동훈, 본투표 열리면 크로스?",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827506_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-headline-6827501",
-      "keywords" : [
-        "청와대",
-        "투표용지",
-        "부족",
-        "사태에",
-        "상황",
-        "엄정히",
-        "주시",
-        "선관위가"
-      ],
-      "publishedAt" : "2026-06-03T17:31:16Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "6·3 지방선거 당일인 오늘 일부 투표소에서 투표용지가 부족해 투·개표가 늦어진 데 대해 청와대가 상황을 엄정히 주시하고 있다고 밝혔습니다. 청와대 강유정 수석대변인은 \"중앙선거관리위원회는 국민의 참정권을 보장하는 헌법 기관으로서 일부 지역 주민의 투표권 행사와 개표 ...",
-      "title" : "청와대, 투표용지 부족 사태에 \"상황 엄정히 주시‥선관위가 책임 있는 조치를\"",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827501_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-headline-6827416",
-      "keywords" : [
-        "토론m",
-        "정규재",
-        "국힘",
-        "무너져야",
-        "선거를",
-        "민주당이",
-        "윤희석",
-        "대구"
-      ],
-      "publishedAt" : "2026-06-03T17:31:10Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "Q. 출구조사, 어떻게 봤나? Q. 민주 11·국힘 1·경합4‥ 총평? Q. 민주당 압승? 사실상 패배? Q. '보수 심장' 대구, 이번엔 다를까? ※ 자세한 내용은 영상을 확인해주시기 바랍니다.",
-      "title" : "[토론M] 정규재 \"국힘 무너져야 할 선거를 민주당이‥\" 윤희석 \"대구 내주면 후폭풍\"",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827416_36911.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-headline-6827495",
-      "keywords" : [
-        "낙선",
-        "확실",
-        "양향자",
-        "도민",
-        "겸허히",
-        "받들",
-        "책임은",
-        "오직"
-      ],
-      "publishedAt" : "2026-06-03T17:31:06Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "6·3 지방선거 경기도지사 선거에서 더불어민주당 추미애 후보의 당선이 확실시되자 국민의힘 양향자 후보가 선거 패배를 인정하고 \"경기도민의 뜻을 겸허히 받들겠다\"고 밝혔습니다. 양 후보는 오늘 밤 11시쯤 국민의힘 경기도당 5층에 설치된 선대위 상황실에서 \"제가 많이 부...",
-      "title" : "'낙선 확실' 양향자 \"도민 뜻 겸허히 받들 것‥책임은 오직 후보인 저에게\"",
-      "url" : "https://imnews.imbc.com/news/2026/politics/article/6827495_36911.html"
     },
     {
       "category" : "politics",
@@ -583,12 +639,32 @@
         "기준",
         "역대"
       ],
-      "publishedAt" : "2026-06-03T17:31:05Z",
+      "publishedAt" : "2026-06-03T18:56:05Z",
       "sourceID" : "mbc-headline",
       "sourceName" : "MBC",
       "summary" : "6·3 지방선거 최종 투표율이 역대 지선 사상 두 번째로 높은, 61%로 잠정 집계됐습니다. 중앙선거관리위원회는 본투표와 사전투표, 거소투표 등을 종합한 결과 전체 유권자 4천464만여 명 가운데 2천724만여 명이 참여했다고 밝혔습니다. 이는 역대 지방선거 투표율 중...",
       "title" : "6·3 지방선거 전국 최종 투표율 61%‥지선 기준 역대 두 번째",
       "url" : "https://imnews.imbc.com/news/2026/politics/article/6827503_36911.html"
+    },
+    {
+      "category" : "society",
+      "id" : "mbc-headline-6827428",
+      "keywords" : [
+        "경기",
+        "과천",
+        "중앙선관위",
+        "인근",
+        "야산서",
+        "방화",
+        "여부",
+        "조사"
+      ],
+      "publishedAt" : "2026-06-03T18:56:04Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "오늘 저녁 8시쯤 경기 과천시 중앙동 중앙선거관리위원회 인근 야산에 불이 났습니다. '산 중턱에 불길이 보인다'는 선거관리위원회 직원의 신고를 받고 출동한 소방 당국은 10여 분 만에 불을 모두 껐고, 인명 피해는 없었습니다. 경찰 조사 결과 불이 난 곳은 외부인 출입...",
+      "title" : "경기 과천 중앙선관위 인근 야산서 불‥방화 여부 등 조사",
+      "url" : "https://imnews.imbc.com/news/2026/society/article/6827428_36918.html"
     },
     {
       "category" : "economy",
@@ -706,26 +782,6 @@
       "summary" : "우리나라 성인들이 가장 많이 쓰는 디지털플랫폼은 네이버와 챗GPT, 유튜브 등인 것으로 나타났습니다. 과학기술정보통신부가 지난해 10월부터 석 달간 전국 성인 남녀 2,500명에게 디지털플랫폼 사용 실태를 조사한 결과 검색은 네이버, 메신저는 카카오톡, 생성형 AI는 챗GPT, 동영상 공유는 유튜브를 가장 많이 사용한 것으로 조사됐다고 밝혔습니다.",
       "title" : "\"한국인 '네이버·카톡·챗GPT' 제일 많이 쓴다\"",
       "url" : "https://imnews.imbc.com/news/2026/econo/article/6827305_36932.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-society-6827428",
-      "keywords" : [
-        "경기",
-        "과천",
-        "중앙선관위",
-        "인근",
-        "야산서",
-        "방화",
-        "여부",
-        "조사"
-      ],
-      "publishedAt" : "2026-06-02T23:59:58Z",
-      "sourceID" : "mbc-society",
-      "sourceName" : "MBC",
-      "summary" : "과천시 중앙동 중앙선거관리위원회 인근 화재 현장 [연합뉴스/독자 제공] 오늘 저녁 8시쯤 경기 과천시 중앙동 중앙선거관리위원회 인근 야산에 불이 났습니다. '산 중턱에 불길이 보인다'는 선거관리위원회 직원의 신고를 받고 출동한 소방 당국은 10여 분 만에 불을 모두 껐고, 인명 피해는 없었습니다. 경찰 조사 결과 불이 난 곳은 외부인 출입이 어려운 곳으로 파악돼, 경찰과 소방 당국은 방화 가능성 등 정확한 화재 원인을 조사하고 있습니다.",
-      "title" : "경기 과천 중앙선관위 인근 야산서 불‥방화 여부 등 조사",
-      "url" : "https://imnews.imbc.com/news/2026/society/article/6827428_36918.html"
     },
     {
       "category" : "international",
@@ -884,64 +940,6 @@
       "summary" : "미국 정부가 철강과 알루미늄, 구리의 파생상품에 대한 관세를 인하하면서, 약 23억 달러 규모 품목에 관세가 내려갈 것으로 기대됩니다. 산업통상부는 \"미 정부가 일부 금속 파생상품 관세를 인하하는 포고령을 발표하면서 오는 8일부터 연말까지 우리 지게차와 불도저, 트랙터 등 일부 이동식 산업기계 등 품목 관세 인하가 예상된다\"며 \"기존 관세합의의 이익균형이 유지되도록 미국과 우호적 협의를 이어갈 것\"이라고 밝혔습니다.",
       "title" : "미국, 철강 파생상품 등 관세 인하 \"23억 달러 규모\"",
       "url" : "https://imnews.imbc.com/replay/2026/nw1200/article/6827289_36967.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-society-6827340",
-      "keywords" : [
-        "종합특검",
-        "한창섭",
-        "행정안전부",
-        "차관",
-        "조사",
-        "관저",
-        "이전"
-      ],
-      "publishedAt" : "2026-06-02T23:59:55Z",
-      "sourceID" : "mbc-society",
-      "sourceName" : "MBC",
-      "summary" : "한창섭 전 행정안전부 차관 [자료사진] 2차 종합특검이 이상민 전 행정안전부 장관 조사를 앞두고 행안부 관계자를 잇달아 불러 조사하고 있습니다. 2차 종합특검은 오늘 오전 10시부터 한창섭 전 행정안전부 차관을 참고인 자격으로 조사 중입니다. 관저 예산 불법 전용 의혹 관련으로, 한 전 차관은 2022년 윤석열 정부 출범 후 초대 행안부 차관으로 이상민 전 장관과 함께 근무했습니다. 특검팀은 내일 오전 10시 이 전 장관을 직권남용 혐의 피의자 신분으로 불러 조사할 예정입니다.",
-      "title" : "종합특검, 한창섭 전 행정안전부 차관 첫 조사‥관저 이전 관련",
-      "url" : "https://imnews.imbc.com/news/2026/society/article/6827340_36918.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-society-6827297",
-      "keywords" : [
-        "오전",
-        "동안",
-        "전국",
-        "선거관련",
-        "신고",
-        "213건",
-        "투표방해",
-        "폭행"
-      ],
-      "publishedAt" : "2026-06-02T23:59:54Z",
-      "sourceID" : "mbc-society",
-      "sourceName" : "MBC",
-      "summary" : "경찰청은 6·3 지방선거 당일인 오늘 오전 6시부터 낮 12시까지 전국에 213건의 선거 관련 신고가 접수됐다고 밝혔습니다. 이중 투표방해와 소란은 28건, 폭행 2건, 교통불편 10건, 이외 오인 등 기타 신고가 173건인 것으로 조사됐습니다. 오늘 오전 9시 40분쯤 경기 화성시의 한 투표소에서는 한 남성이 사진을 촬영하다 선거사무원의 제지를 받기도 했습니다. 서울 동대문구 한 투표소에서는 60대 남성이 투표용지를 투표함에 넣지 않은 채 밖으로 나가려다 제지받자 고성을 지르며 소란을 피우기도 했습니다.",
-      "title" : "오전 동안 전국 선거관련 신고 213건‥투표방해·폭행 등",
-      "url" : "https://imnews.imbc.com/news/2026/society/article/6827297_36918.html"
-    },
-    {
-      "category" : "international",
-      "id" : "mbc-world-6827288",
-      "keywords" : [
-        "트럼프",
-        "계속",
-        "대화",
-        "루비오",
-        "이란",
-        "핵협상",
-        "동의"
-      ],
-      "publishedAt" : "2026-06-02T23:59:54Z",
-      "sourceID" : "mbc-world",
-      "sourceName" : "MBC",
-      "summary" : "미국 트럼프 대통령은 이란과의 대화가 중단됐다는 주요 언론들의 보도는 거짓이라며 대화가 계속되고 있다고 SNS에서 밝혔습니다. 루비오 국무장관은 이란이 핵 협상에 동의했다고 의회 청문회에서 공개했습니다. 워싱턴 김재용 특파원입니다. 지난달 27일 내각회의 이후 공개 일정을 하지 않고 있는 트럼프 대통령은 SNS에 글을 올려 이란과의 대화는 계속되고 있다고 밝혔습니다. 대화가 중단됐다는 언론들의 보도는 가짜 뉴스라며 양국 간 대화는 4일 전부터 오늘까지 계속 이어지고 있다고 강조했습니다.",
-      "title" : "트럼프 \"계속 대화\"‥루비오 \"이란, 핵협상 동의\"",
-      "url" : "https://imnews.imbc.com/replay/2026/nw1200/article/6827288_36967.html"
     }
   ]
 }
