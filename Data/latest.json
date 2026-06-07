@@ -1,9 +1,181 @@
 {
-  "generatedAt" : "2026-06-06T23:33:02Z",
+  "generatedAt" : "2026-06-07T00:00:12Z",
   "items" : [
     {
+      "category" : "society",
+      "id" : "mbc-headline-6828266",
+      "keywords" : [
+        "잠실개표소",
+        "봉쇄",
+        "사흘째",
+        "이어지는",
+        "밤샘",
+        "시위"
+      ],
+      "publishedAt" : "2026-06-07T00:00:09Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "서울 올림픽공원 핸드볼경기장 개표소가 봉쇄된 지 오늘로 2박 3일째입니다. 어젯밤엔 3만 명이 넘는 인원이 재선거를 요구하며 밤샘 시위를 벌였고, 일요일인 오늘도 대규모 인파가 몰릴 것으로 예상됩니다. 보도의 정한솔 기자입니다. 어두운 밤, ...",
+      "title" : "잠실개표소 봉쇄 사흘째‥이어지는 밤샘 시위",
+      "url" : "https://imnews.imbc.com/replay/2026/nwtoday/article/6828266_37012.html"
+    },
+    {
+      "category" : "society",
+      "id" : "mbc-headline-6828239",
+      "keywords" : [
+        "독립성",
+        "방패삼아",
+        "치외법권",
+        "무소불위",
+        "헌법기관",
+        "선관위"
+      ],
+      "publishedAt" : "2026-06-07T00:00:08Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "선관위가 사회적으로 큰 물의를 일으킨 건 이번이 처음이 아닙니다. 투표지를 소쿠리에 담아 옮긴 부실 운영으로 논란을 빚은 소쿠리 투표. 또, 고위직 자녀의 채용 비리 등으로 선관위 수뇌부가 고개를 숙이는 일이 반복돼 왔습니다. 헌법상 독립기관이라는 이유로 ...",
+      "title" : "독립성 방패삼아 치외법권? '무소불위' 헌법기관 선관위",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828239_37004.html"
+    },
+    {
+      "category" : "society",
+      "id" : "mbc-headline-6828258",
+      "keywords" : [
+        "정성호",
+        "법무장관",
+        "참정권",
+        "침해",
+        "진상규명",
+        "촉구",
+        "음모론은",
+        "용납"
+      ],
+      "publishedAt" : "2026-06-07T00:00:07Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "정성호 법무부 장관이 6.3 지방선거 투표용지 부족사태의 진상규명을 촉구하면서도 부정선거 음모론에 대해선 강하게 비판했습니다. 정 장관은 오늘 저녁 SNS를 통해 \"이번 사태는 민주주의의 근간이자 국민의 불가침 권리인 참정권을 심각하게 침해한 중대한 문제\"라며 \"선관위...",
+      "title" : "정성호 법무장관 \"참정권 침해 진상규명 촉구‥음모론은 용납 안돼\"",
+      "url" : "https://imnews.imbc.com/news/2026/society/article/6828258_36918.html"
+    },
+    {
+      "category" : "society",
+      "id" : "mbc-headline-6828237",
+      "keywords" : [
+        "불법",
+        "검문에",
+        "개인정보",
+        "탈취까지",
+        "틈에",
+        "윤어게인"
+      ],
+      "publishedAt" : "2026-06-07T00:00:06Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "시위 현장에선 일부 시민들의 도를 넘는 행위도 이어지고 있습니다. 투표 개인정보가 담긴 문서를 맘대로 가져가거나, 경찰처럼 길을 막고 시민들을 검문하는 일까지 벌어졌습니다. 이 틈을 타 부정선거 음모론자들은 세를 모아 윤어게인을 외치고 혐중을 선동하고 나섰...",
+      "title" : "불법 검문에 개인정보 탈취까지‥이 틈에 '윤어게인'?",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828237_37004.html"
+    },
+    {
+      "category" : "international",
+      "id" : "mbc-headline-6828243",
+      "keywords" : [
+        "반도체주",
+        "폭락에",
+        "환율도",
+        "급등",
+        "검은",
+        "월요일",
+        "오나"
+      ],
+      "publishedAt" : "2026-06-07T00:00:05Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "검은 금요일에 이어 검은 월요일을 맞이하게 될지도 모르겠습니다. AI 관련 기술주와 반도체 종목들이 큰 폭으로 떨어지면서 미국 증시가 급락했는데요. 원/달러 환율도 급등해 우리 금융 시장에 대한 우려가 커지고 있습니다. 뉴욕 손병산 특파원입니다. ◀ 리포트...",
+      "title" : "반도체주 폭락에 환율도 급등‥'검은 월요일' 오나",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828243_37004.html"
+    },
+    {
+      "category" : "economy",
+      "id" : "mbc-headline-6828241",
+      "keywords" : [
+        "젠슨",
+        "회식",
+        "하며",
+        "ai",
+        "동맹",
+        "다졌다",
+        "2차는",
+        "역시"
+      ],
+      "publishedAt" : "2026-06-07T00:00:04Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "방한 중인 젠슨 황 엔비디아 최고경영자가 대기업 총수들과 한국의 뜨거운 금요일 밤을 즐겼습니다. 어제저녁 삼겹살 회동에 이어 2차로 치킨집까지 찾았는데요. 엔비디아의 네 가지 사업을 공개하며, 한국을 위한 '선물'이라고 표현했습니다. 그 선물이 뭔지, 김민...",
+      "title" : "젠슨 황 'K-회식'하며 'AI 동맹' 다졌다‥2차는 역시 치맥",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828241_37004.html"
+    },
+    {
+      "category" : "society",
+      "id" : "mbc-headline-6828254",
+      "keywords" : [
+        "부정선거론자",
+        "모스",
+        "북중",
+        "총칼로",
+        "이기니",
+        "투표로",
+        "이기려",
+        "한다"
+      ],
+      "publishedAt" : "2026-06-07T00:00:03Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "대표적인 부정선거론자인 모스 탄 미국 리버티대 교수가 이번 6.3 지방선거 투표용지 부족사태에 대해 \"북한과 중국이 총칼로 이기지 못해서 이제 투표로 이기려고 하는 것\"이라며 재차 음모론을 제기했습니다. 모스 탄 교수는 오늘 저녁 6시 반쯤 서울 송파구 올림픽공원 핸드...",
+      "title" : "'부정선거론자' 모스 탄 \"북중, 총칼로 못 이기니 투표로 이기려 한다\"",
+      "url" : "https://imnews.imbc.com/news/2026/society/article/6828254_36918.html"
+    },
+    {
+      "category" : "society",
+      "id" : "mbc-headline-6828240",
+      "keywords" : [
+        "윤석열",
+        "종합특검",
+        "피의자",
+        "출석",
+        "검사한테",
+        "조사받겠다",
+        "조사실",
+        "모습"
+      ],
+      "publishedAt" : "2026-06-07T00:00:02Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "내란 우두머리 혐의로 1심에서 무기징역을 선고받은 윤석열 피고인이 2차 종합특검 출범 석 달여 만에 직권남용 혐의 피의자 신분으로 처음 소환됐습니다. 변호인단의 반발로 출석 장면이 공개되지 않은 윤 피고인이, 출석 후 조사실에 있는 모습을 저희 취재진이 포...",
+      "title" : "[단독] 윤석열, 종합특검 첫 피의자 출석‥\"검사한테 조사받겠다\" 조사실 모습 포착",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828240_37004.html"
+    },
+    {
       "category" : "politics",
-      "id" : "mbc-politics-6828273",
+      "id" : "mbc-headline-6828247",
+      "keywords" : [
+        "통일전망대",
+        "떠오르는",
+        "북한",
+        "권력",
+        "실세",
+        "내각총리",
+        "박태성"
+      ],
+      "publishedAt" : "2026-06-07T00:00:01Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "북한의 권력 구도를 논할 때 김정은 위원장의 최측근인 조용원 최고인민회의 상임위원장이나, 동생 김여정이 실세 2인자로 거론됩니다. 최근엔 내각 총리 박태성이 또 다른 실세로 존재감을 키워가고 있다는데요. 김필국 논설위원이 살펴봤습니다. 북한 ...",
+      "title" : "[통일전망대] 떠오르는 북한 권력 실세 내각총리 박태성",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828247_37004.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-headline-6828273",
       "keywords" : [
         "김정은",
         "미사일",
@@ -14,9 +186,9 @@
         "확대해야"
       ],
       "publishedAt" : "2026-06-07T00:00:00Z",
-      "sourceID" : "mbc-politics",
+      "sourceID" : "mbc-headline",
       "sourceName" : "MBC",
-      "summary" : "김정은, 중요무기 시험 참관 김정은 북한 국무위원장이 미사일 수요가 대폭 늘 것이라면서 탄도·순항미사일 생산능력을 앞으로 5년 이내에 기존의 2.5배로 확대하라고 지시했습니다. 북한 노동신문에 따르면 김 위원장은 어제 중요 군수기업소를 찾아 미사일총국의 생산능력 확대 계획 보고를 받고 \"5개년 계획기간 안에 미사일 생산량을 2.5배로 확대하는 문제는 대단히 중요한 과업\"이라고 강조했습니다.",
+      "summary" : "김정은 북한 국무위원장이 미사일 수요가 대폭 늘 것이라면서 탄도·순항미사일 생산능력을 앞으로 5년 이내에 기존의 2.5배로 확대하라고 지시했습니다. 북한 노동신문에 따르면 김 위원장은 어제 중요 군수기업소를 찾아 미사일총국의 생산능력 확대 계획 보고를 받고 \"5개년 계...",
       "title" : "김정은 \"미사일 수요 대폭 늘 것‥생산량 2.5배로 확대해야\"",
       "url" : "https://imnews.imbc.com/news/2026/politics/article/6828273_36911.html"
     },
@@ -135,6 +307,25 @@
       "url" : "https://imnews.imbc.com/replay/2026/nwtoday/article/6828269_37012.html"
     },
     {
+      "category" : "economy",
+      "id" : "mbc-headline-6828215",
+      "keywords" : [
+        "호르무즈",
+        "봉쇄",
+        "8번째",
+        "한국",
+        "유조선",
+        "홍해",
+        "통과"
+      ],
+      "publishedAt" : "2026-06-06T23:59:58Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "중동 전쟁으로 호르무즈 해협이 봉쇄된 이후 8번째 한국 유조선이 우회로인 홍해를 통과해 국내로 들어오고 있습니다. 해양수산부는 사우디아라비아 얀부항에서 원유를 실은 국내 선박이 오늘 낮 12시쯤, 홍해를 안전하게 통과했다고 밝혔습니다. 지난 4월부터 홍해 항로를 통과한...",
+      "title" : "호르무즈 봉쇄 후 8번째 한국 유조선 홍해 통과",
+      "url" : "https://imnews.imbc.com/news/2026/econo/article/6828215_36932.html"
+    },
+    {
       "category" : "international",
       "id" : "mbc-world-6828262",
       "keywords" : [
@@ -154,22 +345,24 @@
       "url" : "https://imnews.imbc.com/news/2026/world/article/6828262_36925.html"
     },
     {
-      "category" : "society",
-      "id" : "mbc-society-6828266",
+      "category" : "economy",
+      "id" : "mbc-headline-6828214",
       "keywords" : [
-        "잠실개표소",
-        "봉쇄",
-        "사흘째",
-        "이어지는",
-        "밤샘",
-        "시위"
+        "cu편의점",
+        "택배",
+        "개인정보",
+        "이름",
+        "주소",
+        "유출",
+        "피해",
+        "규모"
       ],
-      "publishedAt" : "2026-06-06T23:59:58Z",
-      "sourceID" : "mbc-society",
+      "publishedAt" : "2026-06-06T23:59:57Z",
+      "sourceID" : "mbc-headline",
       "sourceName" : "MBC",
-      "summary" : "서울 올림픽공원 핸드볼경기장 개표소가 봉쇄된 지 오늘로 2박 3일째입니다. 어젯밤엔 3만 명이 넘는 인원이 재선거를 요구하며 밤샘 시위를 벌였고, 일요일인 오늘도 대규모 인파가 몰릴 것으로 예상됩니다. 보도의 정한솔 기자입니다. 어두운 밤, 태극기와 성조기를 든 사람들이 개표소 앞을 가득 메웠습니다. '재선거'와 '부정선거'가 적힌 손팻말도 눈에 띕니다. \"재선거! 재선거! 재선거!\" 투표함 반출을 저지하겠다며 2박 3일째 개표소 입구를 모두 막고 밤샘 시위를 벌이고 있는 겁니다.",
-      "title" : "잠실개표소 봉쇄 사흘째‥이어지는 밤샘 시위",
-      "url" : "https://imnews.imbc.com/replay/2026/nwtoday/article/6828266_37012.html"
+      "summary" : "CU편의점 택배 서비스를 운영하는 'BGF네트웍스'에서 해킹 공격에 따른 고객 개인정보 유출 사고가 발생했습니다. BGF네트웍스는 어제 홈페이지 공지를 통해 \"지난 4일 신원을 알 수 없는 해커가 공격해 고객 개인정보가 유출됐다\"며 \"책임을 통감하고 깊이 사과드린다\"고...",
+      "title" : "CU편의점 택배 개인정보 이름·주소 등 유출‥\"피해 규모 확인 중\"",
+      "url" : "https://imnews.imbc.com/news/2026/econo/article/6828214_36932.html"
     },
     {
       "category" : "international",
@@ -209,6 +402,26 @@
     },
     {
       "category" : "society",
+      "id" : "mbc-headline-6828172",
+      "keywords" : [
+        "슈퍼",
+        "태풍이",
+        "엘니뇨",
+        "방아쇠",
+        "당겼다",
+        "역대",
+        "최강",
+        "전망까지"
+      ],
+      "publishedAt" : "2026-06-06T23:59:56Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "━ 빠르게 발달하는 엘니뇨, 역대 최강 전망까지 동태평양의 수온이 빠르게 상승하고 있습니다. 엘니뇨가 출현하고 있습니다. 올해 하반기부터 내년 사이 전 지구적인 기후의 최대 이슈는 슈퍼 엘니뇨의 출현과 그에 따른 기온 급상승으로, 지구의 기온이 산업화 이전보다 1.5도...",
+      "title" : "슈퍼 태풍이 슈퍼 엘니뇨 방아쇠 당겼다‥역대 최강 전망까지 [기후인사이트 32 | 인싸M]",
+      "url" : "https://imnews.imbc.com/newszoomin/newsinsight/6828172_29123.html"
+    },
+    {
+      "category" : "society",
       "id" : "mbc-society-6828259",
       "keywords" : [
         "날씨",
@@ -226,219 +439,6 @@
       "summary" : "오늘(7일)은 전국이 대체로 흐리고 곳에 따라 비가 내리겠습니다. 오늘 오전 경상권을 시작으로, 오후부터는 충청권 남부내륙과 전라동부, 밤에는 이외 중부지방에도 비 예보가 있습니다. 낮 최고기온은 서울 27도, 대전 28도, 광주 29도, 대구와 부산 26도 등 전국이 20도에서 30도 분포를 보이겠습니다. 바다의 물결은 서해 먼바다에서 최대 2m, 동해와 남해에서 최대 2.5m까지 일겠습니다.",
       "title" : "[날씨] 전국 대체로 흐리고 곳에 따라 비‥낮 최고 30도",
       "url" : "https://imnews.imbc.com/news/2026/society/article/6828259_36918.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-headline-6828239",
-      "keywords" : [
-        "독립성",
-        "방패삼아",
-        "치외법권",
-        "무소불위",
-        "헌법기관",
-        "선관위"
-      ],
-      "publishedAt" : "2026-06-06T23:32:57Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "선관위가 사회적으로 큰 물의를 일으킨 건 이번이 처음이 아닙니다. 투표지를 소쿠리에 담아 옮긴 부실 운영으로 논란을 빚은 소쿠리 투표. 또, 고위직 자녀의 채용 비리 등으로 선관위 수뇌부가 고개를 숙이는 일이 반복돼 왔습니다. 헌법상 독립기관이라는 이유로 ...",
-      "title" : "독립성 방패삼아 치외법권? '무소불위' 헌법기관 선관위",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828239_37004.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-headline-6828258",
-      "keywords" : [
-        "정성호",
-        "법무장관",
-        "참정권",
-        "침해",
-        "진상규명",
-        "촉구",
-        "음모론은",
-        "용납"
-      ],
-      "publishedAt" : "2026-06-06T23:32:56Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "정성호 법무부 장관이 6.3 지방선거 투표용지 부족사태의 진상규명을 촉구하면서도 부정선거 음모론에 대해선 강하게 비판했습니다. 정 장관은 오늘 저녁 SNS를 통해 \"이번 사태는 민주주의의 근간이자 국민의 불가침 권리인 참정권을 심각하게 침해한 중대한 문제\"라며 \"선관위...",
-      "title" : "정성호 법무장관 \"참정권 침해 진상규명 촉구‥음모론은 용납 안돼\"",
-      "url" : "https://imnews.imbc.com/news/2026/society/article/6828258_36918.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-headline-6828237",
-      "keywords" : [
-        "불법",
-        "검문에",
-        "개인정보",
-        "탈취까지",
-        "틈에",
-        "윤어게인"
-      ],
-      "publishedAt" : "2026-06-06T23:32:55Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "시위 현장에선 일부 시민들의 도를 넘는 행위도 이어지고 있습니다. 투표 개인정보가 담긴 문서를 맘대로 가져가거나, 경찰처럼 길을 막고 시민들을 검문하는 일까지 벌어졌습니다. 이 틈을 타 부정선거 음모론자들은 세를 모아 윤어게인을 외치고 혐중을 선동하고 나섰...",
-      "title" : "불법 검문에 개인정보 탈취까지‥이 틈에 '윤어게인'?",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828237_37004.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-headline-6828254",
-      "keywords" : [
-        "부정선거론자",
-        "모스",
-        "북중",
-        "총칼로",
-        "이기니",
-        "투표로",
-        "이기려",
-        "한다"
-      ],
-      "publishedAt" : "2026-06-06T23:32:54Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "대표적인 부정선거론자인 모스 탄 미국 리버티대 교수가 이번 6.3 지방선거 투표용지 부족사태에 대해 \"북한과 중국이 총칼로 이기지 못해서 이제 투표로 이기려고 하는 것\"이라며 재차 음모론을 제기했습니다. 모스 탄 교수는 오늘 저녁 6시 반쯤 서울 송파구 올림픽공원 핸드...",
-      "title" : "'부정선거론자' 모스 탄 \"북중, 총칼로 못 이기니 투표로 이기려 한다\"",
-      "url" : "https://imnews.imbc.com/news/2026/society/article/6828254_36918.html"
-    },
-    {
-      "category" : "international",
-      "id" : "mbc-headline-6828243",
-      "keywords" : [
-        "반도체주",
-        "폭락에",
-        "환율도",
-        "급등",
-        "검은",
-        "월요일",
-        "오나"
-      ],
-      "publishedAt" : "2026-06-06T23:32:53Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "검은 금요일에 이어 검은 월요일을 맞이하게 될지도 모르겠습니다. AI 관련 기술주와 반도체 종목들이 큰 폭으로 떨어지면서 미국 증시가 급락했는데요. 원/달러 환율도 급등해 우리 금융 시장에 대한 우려가 커지고 있습니다. 뉴욕 손병산 특파원입니다. ◀ 리포트...",
-      "title" : "반도체주 폭락에 환율도 급등‥'검은 월요일' 오나",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828243_37004.html"
-    },
-    {
-      "category" : "economy",
-      "id" : "mbc-headline-6828241",
-      "keywords" : [
-        "젠슨",
-        "회식",
-        "하며",
-        "ai",
-        "동맹",
-        "다졌다",
-        "2차는",
-        "역시"
-      ],
-      "publishedAt" : "2026-06-06T23:32:52Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "방한 중인 젠슨 황 엔비디아 최고경영자가 대기업 총수들과 한국의 뜨거운 금요일 밤을 즐겼습니다. 어제저녁 삼겹살 회동에 이어 2차로 치킨집까지 찾았는데요. 엔비디아의 네 가지 사업을 공개하며, 한국을 위한 '선물'이라고 표현했습니다. 그 선물이 뭔지, 김민...",
-      "title" : "젠슨 황 'K-회식'하며 'AI 동맹' 다졌다‥2차는 역시 치맥",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828241_37004.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-headline-6828240",
-      "keywords" : [
-        "윤석열",
-        "종합특검",
-        "피의자",
-        "출석",
-        "검사한테",
-        "조사받겠다",
-        "조사실",
-        "모습"
-      ],
-      "publishedAt" : "2026-06-06T23:32:51Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "내란 우두머리 혐의로 1심에서 무기징역을 선고받은 윤석열 피고인이 2차 종합특검 출범 석 달여 만에 직권남용 혐의 피의자 신분으로 처음 소환됐습니다. 변호인단의 반발로 출석 장면이 공개되지 않은 윤 피고인이, 출석 후 조사실에 있는 모습을 저희 취재진이 포...",
-      "title" : "[단독] 윤석열, 종합특검 첫 피의자 출석‥\"검사한테 조사받겠다\" 조사실 모습 포착",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828240_37004.html"
-    },
-    {
-      "category" : "politics",
-      "id" : "mbc-headline-6828247",
-      "keywords" : [
-        "통일전망대",
-        "떠오르는",
-        "북한",
-        "권력",
-        "실세",
-        "내각총리",
-        "박태성"
-      ],
-      "publishedAt" : "2026-06-06T23:32:50Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "북한의 권력 구도를 논할 때 김정은 위원장의 최측근인 조용원 최고인민회의 상임위원장이나, 동생 김여정이 실세 2인자로 거론됩니다. 최근엔 내각 총리 박태성이 또 다른 실세로 존재감을 키워가고 있다는데요. 김필국 논설위원이 살펴봤습니다. 북한 ...",
-      "title" : "[통일전망대] 떠오르는 북한 권력 실세 내각총리 박태성",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6828247_37004.html"
-    },
-    {
-      "category" : "economy",
-      "id" : "mbc-headline-6828215",
-      "keywords" : [
-        "호르무즈",
-        "봉쇄",
-        "8번째",
-        "한국",
-        "유조선",
-        "홍해",
-        "통과"
-      ],
-      "publishedAt" : "2026-06-06T23:32:47Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "중동 전쟁으로 호르무즈 해협이 봉쇄된 이후 8번째 한국 유조선이 우회로인 홍해를 통과해 국내로 들어오고 있습니다. 해양수산부는 사우디아라비아 얀부항에서 원유를 실은 국내 선박이 오늘 낮 12시쯤, 홍해를 안전하게 통과했다고 밝혔습니다. 지난 4월부터 홍해 항로를 통과한...",
-      "title" : "호르무즈 봉쇄 후 8번째 한국 유조선 홍해 통과",
-      "url" : "https://imnews.imbc.com/news/2026/econo/article/6828215_36932.html"
-    },
-    {
-      "category" : "economy",
-      "id" : "mbc-headline-6828214",
-      "keywords" : [
-        "cu편의점",
-        "택배",
-        "개인정보",
-        "이름",
-        "주소",
-        "유출",
-        "피해",
-        "규모"
-      ],
-      "publishedAt" : "2026-06-06T23:32:46Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "CU편의점 택배 서비스를 운영하는 'BGF네트웍스'에서 해킹 공격에 따른 고객 개인정보 유출 사고가 발생했습니다. BGF네트웍스는 어제 홈페이지 공지를 통해 \"지난 4일 신원을 알 수 없는 해커가 공격해 고객 개인정보가 유출됐다\"며 \"책임을 통감하고 깊이 사과드린다\"고...",
-      "title" : "CU편의점 택배 개인정보 이름·주소 등 유출‥\"피해 규모 확인 중\"",
-      "url" : "https://imnews.imbc.com/news/2026/econo/article/6828214_36932.html"
-    },
-    {
-      "category" : "society",
-      "id" : "mbc-headline-6828172",
-      "keywords" : [
-        "슈퍼",
-        "태풍이",
-        "엘니뇨",
-        "방아쇠",
-        "당겼다",
-        "역대",
-        "최강",
-        "전망까지"
-      ],
-      "publishedAt" : "2026-06-06T23:32:45Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "━ 빠르게 발달하는 엘니뇨, 역대 최강 전망까지 동태평양의 수온이 빠르게 상승하고 있습니다. 엘니뇨가 출현하고 있습니다. 올해 하반기부터 내년 사이 전 지구적인 기후의 최대 이슈는 슈퍼 엘니뇨의 출현과 그에 따른 기온 급상승으로, 지구의 기온이 산업화 이전보다 1.5도...",
-      "title" : "슈퍼 태풍이 슈퍼 엘니뇨 방아쇠 당겼다‥역대 최강 전망까지 [기후인사이트 32 | 인싸M]",
-      "url" : "https://imnews.imbc.com/newszoomin/newsinsight/6828172_29123.html"
     },
     {
       "category" : "sports",
