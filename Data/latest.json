@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2026-08-17T23:00:11Z",
+  "generatedAt" : "2026-08-17T23:21:32Z",
   "items" : [
     {
       "category" : "society",
@@ -780,26 +780,6 @@
       "url" : "https://imnews.imbc.com/news/2026/society/article/6845335_36918.html"
     },
     {
-      "category" : "politics",
-      "id" : "mbc-headline-6845309",
-      "keywords" : [
-        "18",
-        "폄훼",
-        "논란",
-        "이진숙",
-        "윤리위",
-        "제소",
-        "국힘",
-        "징계"
-      ],
-      "publishedAt" : "2026-08-17T23:00:04Z",
-      "sourceID" : "mbc-headline",
-      "sourceName" : "MBC",
-      "summary" : "5·18 민주화운동을 폄훼하는 토론회를 개최해 논란이 된 국민의힘 이진숙 의원이 당 윤리위원회에 제소됐습니다. 국민의힘 일부 책임당원은 이 의원에 대해 최고 수준의 징계를 요청했는데요. 하지만 당 지도부는 당 차원의 징계는 검토하지 않고 있다고 밝혀 당 안...",
-      "title" : "'5·18 폄훼 논란' 이진숙 당 윤리위 제소‥국힘 \"징계 검토 없다\"",
-      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6845309_37004.html"
-    },
-    {
       "category" : "society",
       "id" : "mbc-headline-6845311",
       "keywords" : [
@@ -812,12 +792,32 @@
         "배우는",
         "취준생들"
       ],
-      "publishedAt" : "2026-08-17T23:00:00Z",
+      "publishedAt" : "2026-08-17T23:21:26Z",
       "sourceID" : "mbc-headline",
       "sourceName" : "MBC",
       "summary" : "대학을 졸업하고 전공과 다른 새로운 기술을 배우는 청년들이 늘고 있습니다. 가뜩이나 청년 고용시장이 얼어붙은 데다, AI 영향도 큰데요. 박진준 기자가 보도합니다. 서울시가 마련한 용접 기술 교육 프로그램. 사방에 불꽃이 튀지만 아랑곳하지 않...",
       "title" : "\"용접 배워서 취업하려고요\"‥전공 버리고 기술 배우는 취준생들",
       "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6845311_37004.html"
+    },
+    {
+      "category" : "politics",
+      "id" : "mbc-headline-6845309",
+      "keywords" : [
+        "18",
+        "폄훼",
+        "논란",
+        "이진숙",
+        "윤리위",
+        "제소",
+        "국힘",
+        "징계"
+      ],
+      "publishedAt" : "2026-08-17T23:21:23Z",
+      "sourceID" : "mbc-headline",
+      "sourceName" : "MBC",
+      "summary" : "5·18 민주화운동을 폄훼하는 토론회를 개최해 논란이 된 국민의힘 이진숙 의원이 당 윤리위원회에 제소됐습니다. 국민의힘 일부 책임당원은 이 의원에 대해 최고 수준의 징계를 요청했는데요. 하지만 당 지도부는 당 차원의 징계는 검토하지 않고 있다고 밝혀 당 안...",
+      "title" : "'5·18 폄훼 논란' 이진숙 당 윤리위 제소‥국힘 \"징계 검토 없다\"",
+      "url" : "https://imnews.imbc.com/replay/2026/nwdesk/article/6845309_37004.html"
     },
     {
       "category" : "culture",
